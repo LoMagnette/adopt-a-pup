@@ -1,8 +1,12 @@
 package be.lomagnette.rest;
 
+import dev.langchain4j.model.output.structured.Description;
+
 public record PuppySearchForm(
         String breed,
+        @Description("The minimum age of the puppy in month")
         Integer minAge,
+        @Description("The maximum age of the puppy in month")
         Integer maxAge,
         String size,
         String gender,
