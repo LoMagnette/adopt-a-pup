@@ -1,8 +1,6 @@
 package be.lomagnette.rest;
 
-import be.lomagnette.ai.Bot;
 import be.lomagnette.service.ChatService;
-import be.lomagnette.service.UserService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -19,6 +17,6 @@ public class ChatResource {
 
     @POST
     public ChatMessage<Void> chat(ChatMessage<Void> question) {
-        return chatService.chat(question.text());
+        return chatService.chat(question);
     }
 }

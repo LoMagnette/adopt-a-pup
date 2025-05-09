@@ -8,7 +8,9 @@ import dev.langchain4j.service.UserMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
 import io.quarkiverse.langchain4j.ToolBox;
 
-@RegisterAiService
+@RegisterAiService(
+        retrievalAugmentor = UserMessagesRetrievalAugmentor.class
+)
 @SystemMessage("You are an AI named Pawtrick you help user finding the best puppy based on the information they provide")
 public interface PuppyExpert {
 
@@ -23,4 +25,12 @@ public interface PuppyExpert {
             """)
     @ToolBox(PuppyRepository.class)
     public PuppySearchForm search(@MemoryId String id, String message, PuppySearchForm form);
+
+
+    @UserMessage("""
+            You should try to answer the user questions about puppies and dog breeds. You can should welcome any other precision
+            about the ideal puppy for the user.
+            {message}
+            """)
+    public String chat(String message);
 }

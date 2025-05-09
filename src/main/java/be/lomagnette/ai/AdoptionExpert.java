@@ -1,14 +1,14 @@
 package be.lomagnette.ai;
 
-import be.lomagnette.entities.PuppyRepository;
 import be.lomagnette.rest.PuppySearchForm;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
-import io.quarkiverse.langchain4j.ToolBox;
 
-@RegisterAiService
+@RegisterAiService(
+        retrievalAugmentor = UserMessagesRetrievalAugmentor.class
+)
 @SystemMessage("You are an AI named Pawtrick you help user filling the adoption form")
 public interface AdoptionExpert {
 
@@ -22,4 +22,11 @@ public interface AdoptionExpert {
             {form}
             """)
     public PuppySearchForm search(@MemoryId String id, String message, PuppySearchForm form);
+
+    @UserMessage("""
+            You should try to answer the user questions about puppies adoption.
+            You can should welcome any about the person that want to adopt a pup.
+            {message}
+            """)
+    public String chat(String message);
 }

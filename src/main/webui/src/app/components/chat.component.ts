@@ -1,7 +1,10 @@
-import {Component, signal, computed, ViewChild, ElementRef, AfterViewInit, inject} from '@angular/core';
+import {Component, signal, computed, ViewChild, ElementRef, AfterViewInit, inject, effect} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {ChatService} from "../services/chat.service";
+import {toSignal} from "@angular/core/rxjs-interop";
+import {ActivatedRoute, Router} from "@angular/router";
+import {map} from "rxjs";
 
 
 @Component({
@@ -416,9 +419,18 @@ import {ChatService} from "../services/chat.service";
       }
     `],
 })
-export class ChatComponent implements AfterViewInit {
+export class ChatComponent {
     // State signals
     chatService = inject(ChatService);
+    route = inject(ActivatedRoute);
+    router = inject(Router);
+
+    currentRoute = toSignal(this.route.url.pipe(
+        map(([url]) => {
+                const {path, parameters} = url;
+                return path;
+            }
+        )));
 
     isMinimized = signal<boolean>(true); // Start minimized as a FAB
     isOnline = signal<boolean>(true);
@@ -429,19 +441,12 @@ export class ChatComponent implements AfterViewInit {
     @ViewChild('chatMessages') chatMessagesEl!: ElementRef;
     @ViewChild('fileInput') fileInput!: ElementRef;
 
-    // Mock bot responses - in a real app, these would come from a service
-    botResponses = [
-        "Hello! How can I help you today?",
-        "I'm here to assist with any questions you might have.",
-        "Could you please provide more details?",
-        "Let me check that for you...",
-        "Thank you for your patience.",
-        "Is there anything else you'd like to know?",
-        "I've received your files and will review them shortly.",
-    ];
 
-    ngAfterViewInit(): void {
-        this.scrollToBottom();
+    constructor() {
+        effect(() => {
+            const message = this.messages();
+            this.scrollToBottom();
+        })
     }
 
     // Method to toggle chat minimized state
@@ -474,18 +479,39 @@ export class ChatComponent implements AfterViewInit {
     }
 
     // Method to send a message
-  sendMessage(): void {
+    sendMessage(): void {
         // Don't send if there's no message and no files
         if (!this.currentMessage() && this.selectedFiles().length === 0) return;
         const message = this.currentMessage();
         this.currentMessage.set('');
-        this.chatService.sendMessage(message, this.selectedFiles()).subscribe(() => {
+        this.chatService.sendMessage(message, this.selectedFiles()).subscribe(value => {
                 //TODO
                 this.scrollToBottom();
+                if (value.category) {
+                    if ((this.currentRoute() === "" && value.category !== 'COMPANY') ||
+                        (this.currentRoute() === "puppies" && value.category !== 'PUPPY') ||
+                        (this.currentRoute() === "adoption" && value.category !== 'ADOPTION')) {
+
+                        this.router.navigate([this.getRoute(value.category)]);
+                    }
+
+                }
             }
         )
     }
 
+
+    private getRoute(category: string) {
+        var route = "/";
+        switch (category) {
+            case "PUPPY":
+                return "/puppies";
+            case "ADOPTION":
+                return "/adoption";
+            default:
+                return "/";
+        }
+    }
 
     // Scroll to the bottom of the chat
     scrollToBottom(): void {

@@ -13,6 +13,20 @@ public record PuppySearchForm(
         String activityLevel,
         String[] goodWith,
         boolean onlyAvailable,
-        String searchTerm
-) {
+        String searchTerm) {
+
+    @Override
+    public String toString() {
+        return "PuppySearchForm[" +
+                "breed=" + breed + ", " +
+                "minAge=" + minAge + ", " +
+                "maxAge=" + maxAge + ", " +
+                "size=" + size + ", " +
+                "gender=" + gender + ", " +
+                "activityLevel=" + activityLevel + ", " +
+                "goodWith=" + goodWith + ", " +
+                "onlyAvailable=" + onlyAvailable + ", " +
+                "searchTerm=" + searchTerm + ']';
+    }
+
 }
