@@ -4,7 +4,9 @@ import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
 
-@RegisterAiService
+@RegisterAiService(
+        retrievalAugmentor = DocumentRetrievalAugmentor.class
+)
 public interface PuppyParadiseExpert {
 
     @SystemMessage("""
