@@ -19,16 +19,22 @@ public record PuppySearchForm(
         String searchTerm) {
 
     public static PuppySearchForm setGoodWith(PuppySearchForm form, String[] goodWith) {
+        var minAge = form.minAge;
+        var maxAge = form.maxAge;
+        if( minAge > maxAge){
+            minAge = null;
+            maxAge = form.minAge;
+        }
         return new PuppySearchForm(
                 form.breed,
-                form.minAge,
-                form.maxAge,
+                minAge,
+                maxAge,
                 form.size,
                 form.gender,
                 form.activityLevel,
                 goodWith,
                 form.onlyAvailable,
-                form.searchTerm
+                ""
         );
     }
 }

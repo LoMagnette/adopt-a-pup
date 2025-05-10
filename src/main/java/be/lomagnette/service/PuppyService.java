@@ -38,7 +38,6 @@ public class PuppyService {
         var criteria = expert.search(userService.getUser().id().toString(), form.text(), form.data());
         var goodWithValues = puppyRepository.listAllGoodWithValues().stream().map(String::toLowerCase).toList();
         var filteredGoodWith = Arrays.stream(criteria.goodWith()).filter(goodWithValues::contains).toArray(String[]::new);
-        var strings = expert.matchingQualities(form.text());
         criteria = PuppySearchForm.setGoodWith(criteria, filteredGoodWith);
         var answer = expert.guidePuppySelection(form.text(), Puppy.search(criteria));
         return new ChatMessage<>(answer, criteria, RequestCategory.PUPPY);

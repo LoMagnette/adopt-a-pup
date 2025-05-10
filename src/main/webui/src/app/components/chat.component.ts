@@ -5,12 +5,13 @@ import {ChatService} from "../services/chat.service";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {ActivatedRoute, Router} from "@angular/router";
 import {map} from "rxjs";
+import {MarkdownComponent} from "ngx-markdown";
 
 
 @Component({
     selector: 'app-chat',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, MarkdownComponent],
     template: `
         <div class="chat-container" [class.minimized]="isMinimized()">
             @if (isMinimized()) {
@@ -50,7 +51,7 @@ import {map} from "rxjs";
                         <div class="message" [class.user-message]="message.sender === 'user'"
                              [class.bot-message]="message.sender === 'bot'">
                             <div class="message-content">
-                                <p>{{ message.text }}</p>
+                                <markdown>{{ message.text }}</markdown>
                                 <span class="message-time">{{ formatTime(message.timestamp) }}</span>
                             </div>
                         </div>
