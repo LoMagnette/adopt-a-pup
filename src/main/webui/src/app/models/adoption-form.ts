@@ -10,7 +10,6 @@ export interface AdoptionForm {
   address: {
     street: string;
     city: string;
-    state: string;
     zipCode: string;
   };
 

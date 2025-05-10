@@ -19,9 +19,9 @@ public record PuppySearchForm(
         String searchTerm) {
 
     public static PuppySearchForm setGoodWith(PuppySearchForm form, String[] goodWith) {
-        var minAge = form.minAge;
-        var maxAge = form.maxAge;
-        if( minAge > maxAge){
+        Integer minAge = form.minAge;
+        Integer maxAge = form.maxAge;
+        if( minAge != null && maxAge != null && minAge > maxAge){
             minAge = null;
             maxAge = form.minAge;
         }

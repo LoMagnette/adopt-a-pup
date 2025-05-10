@@ -121,17 +121,22 @@ import {MarkdownComponent} from "ngx-markdown";
         right: 20px;
         z-index: 1000;
       }
+      
 
       .chat-container {
         display: flex;
         flex-direction: column;
-        width: 400px;
-        height: 600px;
+        width: 600px;
+        height: 800px;
         border-radius: 16px;
         overflow: hidden;
         box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
         background-color: white;
         transition: all 0.3s ease;
+
+      }
+      .message-content img {
+        max-width: 150px;
       }
 
       .chat-container.minimized {
@@ -485,13 +490,14 @@ export class ChatComponent {
         if (!this.currentMessage() && this.selectedFiles().length === 0) return;
         const message = this.currentMessage();
         this.currentMessage.set('');
+        const route = this.router.url;
         this.chatService.sendMessage(message, this.selectedFiles()).subscribe(value => {
                 //TODO
                 this.scrollToBottom();
                 if (value.category) {
-                    if ((this.currentRoute() === "" && value.category !== 'COMPANY') ||
-                        (this.currentRoute() === "puppies" && value.category !== 'PUPPY') ||
-                        (this.currentRoute() === "adoption" && value.category !== 'ADOPTION')) {
+                    if ((route === "" && value.category !== 'COMPANY') ||
+                        (route.includes("puppies") && value.category !== 'PUPPY') ||
+                        (route.includes("adopt" ) && value.category !== 'ADOPTION')) {
 
                         this.router.navigate([this.getRoute(value.category)]);
                     }

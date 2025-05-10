@@ -40,7 +40,6 @@ export class ChatService {
         this.addUserMessage(text);
         const url = this.getUrl();
         const message = this.getMessage(text, files);
-        console.log('message', message);
         return this.http.post<ChatMessage<any>>(url, message).pipe(tap(response => {
                 this.addBotMessage(response.text);
                 if(response.data) {
@@ -51,11 +50,9 @@ export class ChatService {
                             form.goodWith.push(value.toLowerCase());
                         })
                         form.goodWith = form.goodWith.filter( value => goodWith.includes(value))
-                        console.log('response.data', response.data);
                         this.puppyService.filter.set(response.data);
                     }else if (response.category === 'ADOPTION') {
-                        console.log('response.data adopt', response.data);
-                        this.adoptionService.getFormData().set(response.data);
+                        this.adoptionService.setFormData(response.data);
                     }
                 }
             })
@@ -87,10 +84,9 @@ export class ChatService {
 
     private getUrl() {
         const currentRoute = this.router.url;
-        console.log('currentRoute', currentRoute);
         if (!currentRoute) {
             return '/api/bot';
-        } else if (currentRoute.includes('adoption')) {
+        } else if (currentRoute.includes('adopt')) {
             return '/api/adoption/chat';
         } else if (currentRoute.includes('puppies')) {
             return '/api/puppies/chat';
@@ -104,8 +100,13 @@ export class ChatService {
         const currentRoute = this.router.url;
         if (!currentRoute) {
             return {text}
-        } else if (currentRoute.includes('adoption')) {
-            return {text, data:this.adoptionService.getFormData()()}
+        } else if (currentRoute.includes('adopt')) {
+            const data = {
+                ...this.adoptionService.getFormData()(),
+                puppy: this.adoptionService.selectedPuppy()
+            };
+            console.log('data', data);
+            return {text, data }
         } else if (currentRoute.includes('puppies')) {
             return {text, data:this.puppyService.filter()}
         } else {

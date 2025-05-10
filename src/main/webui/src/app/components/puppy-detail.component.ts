@@ -251,7 +251,6 @@ export class PuppyDetailComponent {
         const idNbr = Number(this.id());
         const foundPuppy = this.puppyService.getPuppyById(idNbr).subscribe(
             value => {
-              console.log(value);
               this.puppy.set(value);
             }
 

@@ -28,12 +28,6 @@ public class PuppyService {
         this.puppyRepository = puppyRepository;
     }
 
-    public ChatMessage<PuppySearchForm> helpFindThePerfectPup(String question, PuppySearchForm form) {
-        var updatedForm = expert.search(null, question, form);
-        var answer = expert.chat(question);
-        return new ChatMessage<>(answer, updatedForm, RequestCategory.PUPPY);
-    }
-
     public ChatMessage<PuppySearchForm> chat(ChatMessage<PuppySearchForm> form) {
         var criteria = expert.search(userService.getUser().id().toString(), form.text(), form.data());
         var goodWithValues = puppyRepository.listAllGoodWithValues().stream().map(String::toLowerCase).toList();

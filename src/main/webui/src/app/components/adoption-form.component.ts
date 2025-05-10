@@ -1,10 +1,9 @@
-import {Component, inject, input, signal} from '@angular/core';
+import {Component, effect, inject, input, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AdoptionService} from '../services/adoption.service';
 import {AdoptionForm} from '../models/adoption-form';
 import {PuppyService} from "../services/puppy.service";
-import {Puppy} from "../models/puppy";
 
 
 @Component({
@@ -88,14 +87,6 @@ import {Puppy} from "../models/puppy";
                             </div>
 
                             <div class="form-group">
-                                <label for="state">State *</label>
-                                <input id="state" type="text" formControlName="state">
-                                @if (adoptionForm.get('state')?.invalid && adoptionForm.get('state')?.touched) {
-                                    <div class="error-message">State is required</div>
-                                }
-                            </div>
-
-                            <div class="form-group">
                                 <label for="zipCode">Zip Code *</label>
                                 <input id="zipCode" type="text" formControlName="zipCode">
                                 @if (adoptionForm.get('zipCode')?.invalid && adoptionForm.get('zipCode')?.touched) {
@@ -114,10 +105,10 @@ import {Puppy} from "../models/puppy";
                             <label for="housingType">Housing Type *</label>
                             <select id="housingType" formControlName="housingType">
                                 <option value="" disabled selected>Select housing type</option>
-                                <option value="house">House</option>
-                                <option value="apartment">Apartment</option>
-                                <option value="condo">Condo</option>
-                                <option value="other">Other</option>
+                                <option value="house">house</option>
+                                <option value="apartment">apartment</option>
+                                <option value="condo">condo</option>
+                                <option value="other">other</option>
                             </select>
                             @if (adoptionForm.get('housingType')?.invalid && adoptionForm.get('housingType')?.touched) {
                                 <div class="error-message">Please select your housing type</div>
@@ -140,8 +131,8 @@ import {Puppy} from "../models/puppy";
                             <label for="ownOrRent">Do you own or rent your home? *</label>
                             <select id="ownOrRent" formControlName="ownOrRent">
                                 <option value="" disabled selected>Select option</option>
-                                <option value="own">Own</option>
-                                <option value="rent">Rent</option>
+                                <option value="own">own</option>
+                                <option value="rent">rent</option>
                             </select>
                             @if (adoptionForm.get('ownOrRent')?.invalid && adoptionForm.get('ownOrRent')?.touched) {
                                 <div class="error-message">Please select if you own or rent</div>
@@ -359,7 +350,7 @@ import {Puppy} from "../models/puppy";
 
                     @if (currentStep() < 5) {
                         <button type="button" class="next-button" (click)="nextStep()"
-                                [disabled]="!isCurrentStepValid()">Next
+                                [disabled]="(!isCurrentStepValid() && currentStep()===4)">Next
                         </button>
                     } @else {
                         <button type="submit" class="submit-button" [disabled]="!adoptionForm.valid">Submit
@@ -597,11 +588,11 @@ export class AdoptionFormComponent {
         firstName: new FormControl('', [Validators.required]),
         lastName: new FormControl('', [Validators.required]),
         email: new FormControl('', [Validators.required, Validators.email]),
-        phone: new FormControl('', [Validators.required, Validators.pattern('[0-9-+() ]{10,}')]),
+        phone: new FormControl('', [Validators.required]),
         street: new FormControl('', [Validators.required]),
         city: new FormControl('', [Validators.required]),
         state: new FormControl('', [Validators.required]),
-        zipCode: new FormControl('', [Validators.required, Validators.pattern('[0-9]{5}')]),
+        zipCode: new FormControl('', [Validators.required, Validators.pattern('[0-9]{4}')]),
 
         // Household Info
         housingType: new FormControl('', [Validators.required]),
@@ -629,6 +620,20 @@ export class AdoptionFormComponent {
         agreeToHomeVisit: new FormControl(false, [Validators.requiredTrue]),
         agreeToTerms: new FormControl(false, [Validators.requiredTrue])
     });
+
+
+    constructor() {
+        effect(() => {
+            const idNbr = Number.parseInt(this.id());
+            this.puppyService.getPuppyById(idNbr).subscribe(
+                value => this.adoptionService.selectedPuppy.set(value)
+            );
+        });
+        effect(() => {
+            const form = this.adoptionService.adoptionForm();
+            this.adoptionForm.reset(this.adoptionService.toWebForm(form));
+        })
+    }
 
     ngOnInit() {
         // Add conditional validation based on form values
@@ -678,7 +683,7 @@ export class AdoptionFormComponent {
     }
 
     nextStep() {
-        if (this.isCurrentStepValid()) {
+        if (this.isCurrentStepValid() || this.currentStep() <4 ) {
             this.currentStep.update(step => step + 1);
             window.scrollTo(0, 0);
         }
@@ -773,17 +778,15 @@ export class AdoptionFormComponent {
     }
 
     onSubmit() {
-        const idNbr = Number.parseInt(this.id());
         if (this.adoptionForm.valid) {
-            this.puppyService.getPuppyById(idNbr).subscribe(puppy => this.submitAdoption(puppy),
-            );
+            this.submitAdoption();
         }
-        // Format the data according to the AdoptionForm interface
     }
 
-    submitAdoption(puppy: Puppy) {
+    submitAdoption() {
+        if (!this.adoptionService.selectedPuppy()) return;
         const formData: AdoptionForm = {
-            puppy : puppy,
+            puppy: this.adoptionService.selectedPuppy()!,
             firstName: this.adoptionForm.get('firstName')?.value || '',
             lastName: this.adoptionForm.get('lastName')?.value || '',
             email: this.adoptionForm.get('email')?.value || '',
@@ -791,7 +794,6 @@ export class AdoptionFormComponent {
             address: {
                 street: this.adoptionForm.get('street')?.value || '',
                 city: this.adoptionForm.get('city')?.value || '',
-                state: this.adoptionForm.get('state')?.value || '',
                 zipCode: this.adoptionForm.get('zipCode')?.value || ''
             },
             housingType: this.adoptionForm.get('housingType')?.value as any || 'house',

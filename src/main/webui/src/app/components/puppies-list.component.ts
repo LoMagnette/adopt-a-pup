@@ -525,7 +525,6 @@ export class PuppiesListComponent {
     });
     effect(() => {
       const filter = this.filters()
-      console.log(filter)
       if(filter.searchTerm) {
         this.searchTerm.set(filter.searchTerm);
       }
@@ -539,7 +538,6 @@ export class PuppiesListComponent {
         this.maxAge.set(filter.maxAge);
       }
       if(filter.size) {
-        console.log("SIZE")
         this.selectedSize.set(filter.size);
       }
       if(filter.gender) {
@@ -554,7 +552,6 @@ export class PuppiesListComponent {
       if(filter.onlyAvailable) {
         this.onlyAvailable.set(filter.onlyAvailable);
       }
-      console.log(this.getVisualFilter());
     })
   }
 
@@ -586,7 +583,6 @@ export class PuppiesListComponent {
 
   updateGender(event: Event) {
     const target = event.target as HTMLSelectElement;
-    console.log(target.value);
     this.selectedGender.set(target.value === "0: null" ? null : target.value);
   }
 
