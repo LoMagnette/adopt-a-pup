@@ -1,13 +1,17 @@
 package be.lomagnette.entities;
 
-import com.google.errorprone.annotations.RequiredModifiers;
+import be.lomagnette.validations.ValidPermitInfo;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
 @Entity
+@ValidPermitInfo
 public class AdoptionRequest extends PanacheEntity {
 
     @OneToOne
