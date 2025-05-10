@@ -1,7 +1,12 @@
-import {Injectable, signal, computed, inject} from '@angular/core';
+import {computed, inject, Injectable, signal} from '@angular/core';
 import {ChatMessage} from "../models/chat-message";
 import {HttpClient} from "@angular/common/http";
 import {tap} from "rxjs";
+import {ActivatedRoute, Router} from "@angular/router";
+import {toSignal} from "@angular/core/rxjs-interop";
+import {PuppyService} from "./puppy.service";
+import {AdoptionService} from "./adoption.service";
+import {PuppyFilters} from "../models/puppy-filters";
 
 
 @Injectable({
@@ -14,6 +19,14 @@ export class ChatService {
     // Computed signal to get messages reactively
     public messages = this._messages.asReadonly();
 
+    route = inject(ActivatedRoute);
+    router = inject(Router);
+    puppyService = inject(PuppyService);
+    adoptionService = inject(AdoptionService);
+
+    currentRoute = toSignal(this.route.url);
+    routeString = computed(() => (this.currentRoute()|| []).map(value => value.path).join('/'));
+
     private http = inject(HttpClient);
 
 
@@ -25,8 +38,26 @@ export class ChatService {
     // Add a user message and trigger a bot response
     sendMessage(text: string, files: File[]) {
         this.addUserMessage(text);
-        return this.http.post<ChatMessage<any>>('/api/bot', {text}).pipe(tap(response => {
+        const url = this.getUrl();
+        const message = this.getMessage(text, files);
+        console.log('message', message);
+        return this.http.post<ChatMessage<any>>(url, message).pipe(tap(response => {
                 this.addBotMessage(response.text);
+                if(response.data) {
+                    if (response.category === 'PUPPY') {
+                        const form:PuppyFilters = response.data;
+                        const goodWith = this.puppyService.goodWith() || [];
+                        form.goodWith.map( (value) => {
+                            form.goodWith.push(value.toLowerCase());
+                        })
+                        form.goodWith = form.goodWith.filter( value => goodWith.includes(value))
+                        console.log('response.data', response.data);
+                        this.puppyService.filter.set(response.data);
+                    }else if (response.category === 'ADOPTION') {
+                        console.log('response.data adopt', response.data);
+                        this.adoptionService.getFormData().set(response.data);
+                    }
+                }
             })
         );
 
@@ -52,5 +83,33 @@ export class ChatService {
                 timestamp: new Date()
             }
         ]);
+    }
+
+    private getUrl() {
+        const currentRoute = this.router.url;
+        console.log('currentRoute', currentRoute);
+        if (!currentRoute) {
+            return '/api/bot';
+        } else if (currentRoute.includes('adoption')) {
+            return '/api/adoption/chat';
+        } else if (currentRoute.includes('puppies')) {
+            return '/api/puppies/chat';
+        } else {
+            return '/api/bot';
+        }
+
+    }
+
+    private getMessage(text: string, files: File[]) {
+        const currentRoute = this.router.url;
+        if (!currentRoute) {
+            return {text}
+        } else if (currentRoute.includes('adoption')) {
+            return {text, data:this.adoptionService.getFormData()()}
+        } else if (currentRoute.includes('puppies')) {
+            return {text, data:this.puppyService.filter()}
+        } else {
+            return {text}
+        }
     }
 }

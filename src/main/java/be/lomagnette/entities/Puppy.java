@@ -47,28 +47,23 @@ public class Puppy extends PanacheEntity {
             params.put("maxAge", form.maxAge());
         }
 
-        if (form.size() != null && !form.size().isBlank()) {
+        if (form.size() != null) {
             query.append(" and size = :size");
-            params.put("size", Size.valueOf(form.size().toUpperCase()));
+            params.put("size", form.size());
         }
 
-        if (form.gender() != null && !form.gender().isBlank()) {
+        if (form.gender() != null) {
             query.append(" and gender = :gender");
-            params.put("gender", Gender.valueOf(form.gender().toUpperCase()));
+            params.put("gender", form.gender());
         }
 
-        if (form.activityLevel() != null && !form.activityLevel().isBlank()) {
+        if (form.activityLevel() != null ) {
             query.append(" and activityLevel = :activityLevel");
-            params.put("activityLevel", ActivityLevel.valueOf(form.activityLevel().toUpperCase()));
+            params.put("activityLevel", form.activityLevel());
         }
 
         if (form.onlyAvailable()) {
             query.append(" and available = true");
-        }
-
-        if (form.searchTerm() != null && !form.searchTerm().isBlank()) {
-            query.append(" and (lower(name) like :term or lower(description) like :term)");
-            params.put("term", "%" + form.searchTerm().toLowerCase() + "%");
         }
 
         List<Puppy> puppies = Puppy.find(query.toString(), params).list();
@@ -81,5 +76,21 @@ public class Puppy extends PanacheEntity {
         }
 
         return puppies;
+    }
+
+    @Override
+    public String toString() {
+        return "Puppy{" +
+                "name='" + name + '\'' +
+                ", breed='" + breed + '\'' +
+                ", age=" + age +
+                ", size=" + size +
+                ", gender=" + gender +
+                ", activityLevel=" + activityLevel +
+                ", goodWith=" + goodWith +
+                ", description='" + description + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", available=" + available +
+                '}';
     }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, signal, effect } from '@angular/core';
+import {Component, inject, signal, effect, linkedSignal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { PuppyService } from '../services/puppy.service';
@@ -495,19 +495,20 @@ export class PuppiesListComponent {
   private puppyService = inject(PuppyService);
 
   // Signals for reactive state management
-  puppies = toSignal(this.puppyService.getFilteredPuppies({}), {initialValue:[]});
+  puppies = toSignal(this.puppyService.getFilteredPuppies(), {initialValue:[]});
   filteredPuppies = signal<Puppy[]>([...this.puppies()]);
+  filters = this.puppyService.filter.asReadonly();
 
   // Filter signals
-  searchTerm = signal<string | null>(null);
-  selectedBreed = signal<string | null>(null);
-  minAge = signal<number | null>(null);
-  maxAge = signal<number | null>(null);
-  selectedSize = signal<string | null>(null);
-  selectedGender = signal<string | null>(null);
-  selectedActivityLevel = signal<string | null>(null);
-  selectedGoodWith = signal<string[]>([]);
-  onlyAvailable = signal<boolean>(false);
+  searchTerm = linkedSignal<string | null>(() => this.filters().searchTerm || null);
+  selectedBreed = linkedSignal<string | null>(() => this.filters().breed|| null);
+  minAge = linkedSignal<number | null>(() => this.filters().minAge|| null);
+  maxAge = linkedSignal<number | null >(() => this.filters().maxAge|| null);
+  selectedSize = linkedSignal<string | null >(() => this.filters().size|| null);
+  selectedGender = linkedSignal<string | null >(() => this.filters().gender|| null);
+  selectedActivityLevel = linkedSignal<string | null >(() => this.filters().activityLevel || null);
+  selectedGoodWith = linkedSignal<string[]>(() => this.filters().goodWith || []);
+  onlyAvailable = linkedSignal<boolean>(() => !!this.filters().onlyAvailable);
 
   // Options for filters
   uniqueBreeds = this.puppyService.getUniqueBreeds().value;
@@ -522,6 +523,39 @@ export class PuppiesListComponent {
     effect(() => {
       this.applyFilters();
     });
+    effect(() => {
+      const filter = this.filters()
+      console.log(filter)
+      if(filter.searchTerm) {
+        this.searchTerm.set(filter.searchTerm);
+      }
+      if(filter.breed) {
+        this.selectedBreed.set(filter.breed);
+      }
+      if(filter.minAge) {
+        this.minAge.set(filter.minAge);
+      }
+      if(filter.maxAge) {
+        this.maxAge.set(filter.maxAge);
+      }
+      if(filter.size) {
+        console.log("SIZE")
+        this.selectedSize.set(filter.size);
+      }
+      if(filter.gender) {
+        this.selectedGender.set(filter.gender);
+      }
+      if(filter.activityLevel) {
+        this.selectedActivityLevel.set(filter.activityLevel);
+      }
+      if(filter.goodWith) {
+        this.selectedGoodWith.set(filter.goodWith);
+      }
+      if(filter.onlyAvailable) {
+        this.onlyAvailable.set(filter.onlyAvailable);
+      }
+      console.log(this.getVisualFilter());
+    })
   }
 
   // Event handlers for filter updates
@@ -595,14 +629,22 @@ export class PuppiesListComponent {
     this.onlyAvailable.set(false);
 
     // Call the service's reset method
-    this.puppyService.getFilteredPuppies({}).subscribe(puppies => {
+    this.puppyService.reset();
+    this.puppyService.getFilteredPuppies().subscribe(puppies => {
       this.filteredPuppies.set(puppies);
     });
   }
 
   // Apply all filters to get filtered puppies
   applyFilters() {
-    const filter:PuppyFilters = {
+    const filter:PuppyFilters = this.getVisualFilter();
+    this.puppyService.filter.set(filter);
+    this.puppyService.getFilteredPuppies().subscribe(puppies => {
+      this.filteredPuppies.set(puppies);
+    });
+  }
+  getVisualFilter(){
+     return  {
       breed : this.selectedBreed(),
       minAge : this.minAge(),
       maxAge : this.maxAge(),
@@ -613,9 +655,5 @@ export class PuppiesListComponent {
       onlyAvailable : this.onlyAvailable(),
       searchTerm: this.searchTerm()
     }
-    console.log(filter);
-    this.puppyService.getFilteredPuppies(filter).subscribe(puppies => {
-      this.filteredPuppies.set(puppies);
-    });
   }
 }

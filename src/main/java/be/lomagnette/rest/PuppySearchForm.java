@@ -1,5 +1,8 @@
 package be.lomagnette.rest;
 
+import be.lomagnette.entities.ActivityLevel;
+import be.lomagnette.entities.Gender;
+import be.lomagnette.entities.Size;
 import dev.langchain4j.model.output.structured.Description;
 
 public record PuppySearchForm(
@@ -8,25 +11,24 @@ public record PuppySearchForm(
         Integer minAge,
         @Description("The maximum age of the puppy in month")
         Integer maxAge,
-        String size,
-        String gender,
-        String activityLevel,
+        Size size,
+        Gender gender,
+        ActivityLevel activityLevel,
         String[] goodWith,
         boolean onlyAvailable,
         String searchTerm) {
 
-    @Override
-    public String toString() {
-        return "PuppySearchForm[" +
-                "breed=" + breed + ", " +
-                "minAge=" + minAge + ", " +
-                "maxAge=" + maxAge + ", " +
-                "size=" + size + ", " +
-                "gender=" + gender + ", " +
-                "activityLevel=" + activityLevel + ", " +
-                "goodWith=" + goodWith + ", " +
-                "onlyAvailable=" + onlyAvailable + ", " +
-                "searchTerm=" + searchTerm + ']';
+    public static PuppySearchForm setGoodWith(PuppySearchForm form, String[] goodWith) {
+        return new PuppySearchForm(
+                form.breed,
+                form.minAge,
+                form.maxAge,
+                form.size,
+                form.gender,
+                form.activityLevel,
+                goodWith,
+                form.onlyAvailable,
+                form.searchTerm
+        );
     }
-
 }
