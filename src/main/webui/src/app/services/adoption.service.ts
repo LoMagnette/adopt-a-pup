@@ -2,7 +2,6 @@ import {inject, Injectable, signal} from '@angular/core';
 import {AdoptionForm} from '../models/adoption-form';
 import {HttpClient} from "@angular/common/http";
 import {Puppy} from "../models/puppy";
-import {AdoptionFormComponent} from "../components/adoption-form.component";
 
 @Injectable({
     providedIn: 'root'
@@ -64,11 +63,8 @@ export class AdoptionService {
                 previousPets: form.previousPets,
                 hasPets: form.currentPets?.hasPets,
                 petDetails: form.currentPets?.petDetails || null,
-                hasPetPermit: form.hasPetPermit,
                 permitNumber: form.permitNumber || null,
                 permitExpiryDate: form.permitExpiryDate || null,
-                agreeToHomeVisit: form.agreeToHomeVisit,
-                agreeToTerms: form.agreeToTerms
             }
         }
         return {};
@@ -101,11 +97,8 @@ export class AdoptionService {
           hasPets: form.hasPets,
           petDetails: form.petDetails,
         },
-        hasPetPermit: form.hasPetPermit,
         permitNumber: form.permitNumber,
         permitExpiryDate: form.permitExpiryDate,
-        agreeToHomeVisit: form.agreeToHomeVisit,
-        agreeToTerms: form.agreeToTerms,
       }
       console.log('outputForm', outputForm, form);
       return outputForm;

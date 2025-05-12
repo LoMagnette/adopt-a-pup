@@ -27,9 +27,10 @@ public interface PuppyExpert {
             ------
             user message: {message}
             current form: {form}
+            extra info: {extraInfo}
             """)
     @ToolBox(PuppyRepository.class)
-    PuppySearchForm search(@MemoryId String id, String message, PuppySearchForm form);
+    PuppySearchForm search(@MemoryId String id, String message, PuppySearchForm form, String extraInfo);
 
     @UserMessage("""
             - Get all the good with qualities availabe.

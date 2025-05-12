@@ -33,11 +33,7 @@ export interface AdoptionForm {
   };
 
   // Permit Information
-  hasPetPermit: boolean;
   permitNumber?: string;
   permitExpiryDate?: string;
 
-  // Agreement
-  agreeToHomeVisit: boolean;
-  agreeToTerms: boolean;
 }

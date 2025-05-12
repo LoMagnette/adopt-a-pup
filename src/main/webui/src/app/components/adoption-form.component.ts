@@ -227,11 +227,6 @@ import {PuppyService} from "../services/puppy.service";
                     <div class="form-section">
                         <h2>Permit Information</h2>
 
-                        <div class="form-group checkbox-group">
-                            <input id="hasPetPermit" type="checkbox" formControlName="hasPetPermit">
-                            <label for="hasPetPermit">Do you have a pet permit or license?</label>
-                        </div>
-
                         @if (adoptionForm.get('hasPetPermit')?.value) {
                             <div class="form-group indent">
                                 <label for="permitNumber">Permit/License Number *</label>
@@ -612,7 +607,6 @@ export class AdoptionFormComponent {
         petDetails: new FormControl(''),
 
         // Permit Info
-        hasPetPermit: new FormControl(false),
         permitNumber: new FormControl(''),
         permitExpiryDate: new FormControl(''),
 
@@ -632,6 +626,11 @@ export class AdoptionFormComponent {
         effect(() => {
             const form = this.adoptionService.adoptionForm();
             this.adoptionForm.reset(this.adoptionService.toWebForm(form));
+            if (this.adoptionForm.errors === null ||
+                (Object.keys(this.adoptionForm.errors).length <= 2 && this.adoptionForm.get('agreeToHomeVisit')?.invalid && this.adoptionForm.get('agreeToTerms')?.invalid)) {
+                this.currentStep.update(_ => 4);
+            }
+
         })
     }
 
@@ -667,23 +666,14 @@ export class AdoptionFormComponent {
             this.adoptionForm.get('petDetails')?.updateValueAndValidity();
         });
 
-        this.adoptionForm.get('hasPetPermit')?.valueChanges.subscribe(hasPetPermit => {
-            if (hasPetPermit) {
-                this.adoptionForm.get('permitNumber')?.addValidators(Validators.required);
-                this.adoptionForm.get('permitExpiryDate')?.addValidators(Validators.required);
-            } else {
-                this.adoptionForm.get('permitNumber')?.clearValidators();
-                this.adoptionForm.get('permitExpiryDate')?.clearValidators();
-                this.adoptionForm.get('permitNumber')?.setValue('');
-                this.adoptionForm.get('permitExpiryDate')?.setValue('');
-            }
-            this.adoptionForm.get('permitNumber')?.updateValueAndValidity();
-            this.adoptionForm.get('permitExpiryDate')?.updateValueAndValidity();
-        });
+        this.adoptionForm.get('permitNumber')?.addValidators(Validators.required);
+        this.adoptionForm.get('permitExpiryDate')?.addValidators(Validators.required);
+        this.adoptionForm.get('permitNumber')?.updateValueAndValidity();
+        this.adoptionForm.get('permitExpiryDate')?.updateValueAndValidity();
     }
 
     nextStep() {
-        if (this.isCurrentStepValid() || this.currentStep() <4 ) {
+        if (this.isCurrentStepValid() || this.currentStep() < 4) {
             this.currentStep.update(step => step + 1);
             window.scrollTo(0, 0);
         }
@@ -811,11 +801,8 @@ export class AdoptionFormComponent {
                 hasPets: !!this.adoptionForm.get('hasPets')?.value,
                 petDetails: this.adoptionForm.get('petDetails')?.value || undefined
             },
-            hasPetPermit: !!this.adoptionForm.get('hasPetPermit')?.value,
             permitNumber: this.adoptionForm.get('permitNumber')?.value || undefined,
             permitExpiryDate: this.adoptionForm.get('permitExpiryDate')?.value || undefined,
-            agreeToHomeVisit: !!this.adoptionForm.get('agreeToHomeVisit')?.value,
-            agreeToTerms: !!this.adoptionForm.get('agreeToTerms')?.value
         };
 
         // Save form data to the service

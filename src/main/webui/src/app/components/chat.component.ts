@@ -1,4 +1,4 @@
-import {Component, signal, computed, ViewChild, ElementRef, AfterViewInit, inject, effect} from '@angular/core';
+import {Component, effect, ElementRef, inject, signal, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {ChatService} from "../services/chat.service";
@@ -491,7 +491,9 @@ export class ChatComponent {
         const message = this.currentMessage();
         this.currentMessage.set('');
         const route = this.router.url;
-        this.chatService.sendMessage(message, this.selectedFiles()).subscribe(value => {
+        const files = this.selectedFiles();
+        this.selectedFiles.set([]);
+        this.chatService.sendMessage(message, files).subscribe(value => {
                 //TODO
                 this.scrollToBottom();
                 if (value.category) {
@@ -509,7 +511,6 @@ export class ChatComponent {
 
 
     private getRoute(category: string) {
-        var route = "/";
         switch (category) {
             case "PUPPY":
                 return "/puppies";

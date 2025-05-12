@@ -1,6 +1,5 @@
 package be.lomagnette.entities;
 
-import be.lomagnette.validations.ValidPermitInfo;
 import dev.langchain4j.model.output.structured.Description;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
@@ -10,7 +9,6 @@ import org.hibernate.validator.constraints.Length;
 import java.time.LocalDate;
 
 @Entity
-@ValidPermitInfo
 public class AdoptionRequest extends PanacheEntity {
 
     @OneToOne
@@ -88,11 +86,6 @@ public class AdoptionRequest extends PanacheEntity {
     @Description("Information about current pets (if any)")
     public CurrentPets currentPets;
 
-    // --- Permit Information ---
-    @Description("Indicates whether the applicant has a pet permit")
-    @AssertTrue(message = "Pet permit is required if the applicant has pets")
-    public boolean hasPetPermit;
-
     @Description("Permit number (required if pet permit is true)")
     @NotBlank
     @Length(min = 10, max = 10)
@@ -103,12 +96,6 @@ public class AdoptionRequest extends PanacheEntity {
     @Future
     public LocalDate permitExpiryDate;
 
-    // --- Agreement ---
-    public boolean agreeToHomeVisit;
-
-    public boolean agreeToTerms;
-
-
     // --- Enums ---
     public enum HousingType { house, apartment, condo, other }
     public enum OwnershipStatus { own, rent }
@@ -116,7 +103,7 @@ public class AdoptionRequest extends PanacheEntity {
 
     // --- Embeddables ---
     @Embeddable
-    public static record Address (
+    public record Address (
         @NotBlank
         String street,
         @NotBlank
@@ -128,7 +115,7 @@ public class AdoptionRequest extends PanacheEntity {
     }
 
     @Embeddable
-    public static record CurrentPets (
+    public record CurrentPets (
         boolean hasPets,
         String petDetails
     ){
@@ -163,11 +150,8 @@ public class AdoptionRequest extends PanacheEntity {
                 ", activityLevel=" + activityLevel +
                 ", previousPets=" + previousPets +
                 ", currentPets=" + currentPets +
-                ", hasPetPermit=" + hasPetPermit +
                 ", permitNumber='" + permitNumber + '\'' +
                 ", permitExpiryDate=" + permitExpiryDate +
-                ", agreeToHomeVisit=" + agreeToHomeVisit +
-                ", agreeToTerms=" + agreeToTerms +
                 '}';
     }
 }

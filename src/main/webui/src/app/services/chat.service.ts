@@ -108,7 +108,12 @@ export class ChatService {
             console.log('data', data);
             return {text, data }
         } else if (currentRoute.includes('puppies')) {
-            return {text, data:this.puppyService.filter()}
+            const formData = new FormData();
+            formData.append('form', JSON.stringify({text, data:this.puppyService.filter()}));
+            if(files.length > 0) {
+                formData.append('file', files[0]);
+            }
+            return formData;
         } else {
             return {text}
         }

@@ -1,14 +1,16 @@
 package be.lomagnette.rest;
 
+import be.lomagnette.ai.DogIdentification;
 import be.lomagnette.entities.Puppy;
 import be.lomagnette.entities.PuppyRepository;
 import be.lomagnette.service.PuppyService;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import org.jboss.resteasy.reactive.PartType;
+import org.jboss.resteasy.reactive.RestForm;
 
+import java.io.File;
 import java.util.List;
 
 @Path("/puppies")
@@ -16,6 +18,8 @@ public class PuppyResource {
 
     private final PuppyRepository repository;
     private final PuppyService service;
+    @Inject
+    DogIdentification dogIdentification;
 
     @Inject
     public PuppyResource(PuppyRepository repository, PuppyService service) {
@@ -64,8 +68,24 @@ public class PuppyResource {
     }
 
     @Path("chat")
+    @Consumes("multipart/form-data")
     @POST
-    public ChatMessage<PuppySearchForm> chat(ChatMessage<PuppySearchForm> form) {
-        return this.service.chat(form);
+    public ChatMessage<PuppySearchForm> chat(@RestForm @PartType(MediaType.APPLICATION_JSON) ChatMessage<PuppySearchForm> form, @RestForm("file") File file) {
+        return this.service.chat(form, file);
+    }
+
+    @Path("dog-names")
+    @Produces("text/plain")
+    @GET
+    public String generateDogName(@QueryParam("breed") String breed){
+        return dogIdentification.generateDogName(breed);
+    }
+
+    @Path("dog-description")
+    @POST
+    @Consumes("multipart/form-data")
+    @Produces("text/plain")
+    public String describeDog(@RestForm("file") File file){
+        return dogIdentification.describeDog(file);
     }
 }
