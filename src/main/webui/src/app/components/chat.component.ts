@@ -2,9 +2,7 @@ import {Component, effect, ElementRef, inject, signal, ViewChild} from '@angular
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {ChatService} from "../services/chat.service";
-import {toSignal} from "@angular/core/rxjs-interop";
-import {ActivatedRoute, Router} from "@angular/router";
-import {map} from "rxjs";
+import {Router} from "@angular/router";
 import {MarkdownComponent} from "ngx-markdown";
 
 
@@ -431,15 +429,7 @@ import {MarkdownComponent} from "ngx-markdown";
 export class ChatComponent {
     // State signals
     chatService = inject(ChatService);
-    route = inject(ActivatedRoute);
     router = inject(Router);
-
-    currentRoute = toSignal(this.route.url.pipe(
-        map(([url]) => {
-                const {path, parameters} = url;
-                return path;
-            }
-        )));
 
     isMinimized = signal<boolean>(true); // Start minimized as a FAB
     isOnline = signal<boolean>(true);
@@ -453,7 +443,7 @@ export class ChatComponent {
 
     constructor() {
         effect(() => {
-            const message = this.messages();
+            const _ = this.messages();
             this.scrollToBottom();
         })
     }

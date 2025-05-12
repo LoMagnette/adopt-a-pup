@@ -5,12 +5,7 @@ import be.lomagnette.ai.RequestCategory;
 import be.lomagnette.entities.AdoptionRequest;
 import be.lomagnette.rest.ChatMessage;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Valid;
 import jakarta.validation.Validator;
-
-import java.util.List;
-import java.util.Set;
 
 @ApplicationScoped
 public class AdoptionService {
@@ -30,11 +25,11 @@ public class AdoptionService {
         updatedForm.setPuppy(form.data().getPuppy());
         var validations = validator.validate(updatedForm);
         if (validations.isEmpty()) {
-            return new ChatMessage<AdoptionRequest>(expert.success(), updatedForm, RequestCategory.ADOPTION, expert.generateSummary(updatedForm));
+            return new ChatMessage<>(expert.success(), updatedForm, RequestCategory.ADOPTION, expert.generateSummary(updatedForm));
         }else{
             var humanReadableErrors = this.expert.getHumanReadableErrors(validations);
             var answer = this.expert.helpUser(userService.getUser().id().toString(), humanReadableErrors, form.text());
-            return new ChatMessage<AdoptionRequest>(answer,updatedForm, RequestCategory.ADOPTION);
+            return new ChatMessage<>(answer,updatedForm, RequestCategory.ADOPTION);
         }
 
     }

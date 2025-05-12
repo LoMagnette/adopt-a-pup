@@ -599,7 +599,7 @@ export class AdoptionFormComponent {
             }
         })
 
-        return Object.entries(this.adoptionForm.controls).map(([key, value]) => value.errors).flat().length;
+        return Object.entries(this.adoptionForm.controls).map(([_, value]) => value.errors).flat().length;
     }
 
     ngOnInit() {
@@ -717,10 +717,8 @@ export class AdoptionFormComponent {
     }
 
     areAllPreviousStepsValid(step: number): boolean {
-        const currentStep = this.currentStep();
-
         // Save current step
-        const temp = currentStep;
+        const temp = this.currentStep();
 
         // Check all steps up to the target step
         let allValid = true;
