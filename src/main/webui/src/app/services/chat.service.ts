@@ -32,7 +32,7 @@ export class ChatService {
 
     constructor() {
         // Initialize with a welcome message
-        this.addBotMessage("Welcome! How can I assist you today?");
+        this.addBotMessage("Welcome! My name is Pawtrick how can I assist you today?");
     }
 
     // Add a user message and trigger a bot response

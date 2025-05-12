@@ -26,7 +26,7 @@ import {MarkdownComponent} from "ngx-markdown";
                 <div class="chat-header">
                     <div class="chat-title">
                         <div class="status-indicator" [class.online]="isOnline()"></div>
-                        <h3>Chat Support</h3>
+                        <h3>Dog Support</h3>
                     </div>
                     <div class="chat-controls">
                         <button class="minimize-button" (click)="toggleMinimize()">
@@ -172,7 +172,7 @@ import {MarkdownComponent} from "ngx-markdown";
         justify-content: space-between;
         align-items: center;
         padding: 18px 24px;
-        background-color: #4a6fa5;
+        background: linear-gradient(135deg, #6e8efb, #a777e3);
         color: white;
       }
 
