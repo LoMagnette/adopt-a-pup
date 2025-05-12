@@ -36,7 +36,7 @@ public class PuppyService {
         if(file != null){
            extraInfo = dogIdentification.describeDog(file);
         }
-        var criteria = expert.search(userService.getUser().id().toString(), form.text(), form.data(), extraInfo);
+        var criteria = expert.fillForm(userService.getUser().id().toString(), form.text(), form.data(), extraInfo);
         var goodWithValues = puppyRepository.listAllGoodWithValues().stream().map(String::toLowerCase).toList();
         var goodWithFound = criteria.goodWith() == null ? new String[0] : criteria.goodWith();
         var filteredGoodWith = Arrays.stream(goodWithFound).filter(goodWithValues::contains).toArray(String[]::new);

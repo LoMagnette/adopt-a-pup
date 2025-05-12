@@ -18,11 +18,9 @@ public class DocumentRetrievalAugmentor implements Supplier<RetrievalAugmentor> 
     private final RetrievalAugmentor augmentor;
 
     DocumentRetrievalAugmentor(PgVectorEmbeddingStore store, EmbeddingModel model) {
-        Filter notUser = Filter.not(metadataKey("user").containsString(""));
         EmbeddingStoreContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
                 .embeddingModel(model)
                 .embeddingStore(store)
-                .filter(notUser)
                 .maxResults(3)
                 .build();
         augmentor = DefaultRetrievalAugmentor
