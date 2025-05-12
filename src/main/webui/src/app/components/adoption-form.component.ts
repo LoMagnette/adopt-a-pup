@@ -227,7 +227,6 @@ import {PuppyService} from "../services/puppy.service";
                     <div class="form-section">
                         <h2>Permit Information</h2>
 
-                        @if (adoptionForm.get('hasPetPermit')?.value) {
                             <div class="form-group indent">
                                 <label for="permitNumber">Permit/License Number *</label>
                                 <input id="permitNumber" type="text" formControlName="permitNumber">
@@ -243,7 +242,6 @@ import {PuppyService} from "../services/puppy.service";
                                     <div class="error-message">Valid expiry date is required</div>
                                 }
                             </div>
-                        }
                     </div>
                 }
 
@@ -327,14 +325,11 @@ import {PuppyService} from "../services/puppy.service";
                                 <p><strong>Pet details:</strong> {{ adoptionForm.get('petDetails')?.value }}</p>
                             }
                         </div>
-
-                        @if (adoptionForm.get('hasPetPermit')?.value) {
-                            <div class="summary-section">
-                                <h4>Permit Information</h4>
-                                <p><strong>Permit number:</strong> {{ adoptionForm.get('permitNumber')?.value }}</p>
-                                <p><strong>Expiry date:</strong> {{ adoptionForm.get('permitExpiryDate')?.value }}</p>
-                            </div>
-                        }
+                        <div class="summary-section">
+                            <h4>Permit Information</h4>
+                            <p><strong>Permit number:</strong> {{ adoptionForm.get('permitNumber')?.value }}</p>
+                            <p><strong>Expiry date:</strong> {{ adoptionForm.get('permitExpiryDate')?.value }}</p>
+                        </div>
                     </div>
                 }
 
@@ -345,7 +340,7 @@ import {PuppyService} from "../services/puppy.service";
 
                     @if (currentStep() < 5) {
                         <button type="button" class="next-button" (click)="nextStep()"
-                                [disabled]="(!isCurrentStepValid() && currentStep()===4)">Next
+                                [disabled]="(getErrorsCount()-2 ===0 && currentStep()===4)">Next {{getErrorsCount()}}
                         </button>
                     } @else {
                         <button type="submit" class="submit-button" [disabled]="!adoptionForm.valid">Submit
@@ -586,7 +581,6 @@ export class AdoptionFormComponent {
         phone: new FormControl('', [Validators.required]),
         street: new FormControl('', [Validators.required]),
         city: new FormControl('', [Validators.required]),
-        state: new FormControl('', [Validators.required]),
         zipCode: new FormControl('', [Validators.required, Validators.pattern('[0-9]{4}')]),
 
         // Household Info
@@ -626,12 +620,24 @@ export class AdoptionFormComponent {
         effect(() => {
             const form = this.adoptionService.adoptionForm();
             this.adoptionForm.reset(this.adoptionService.toWebForm(form));
-            if (this.adoptionForm.errors === null ||
-                (Object.keys(this.adoptionForm.errors).length <= 2 && this.adoptionForm.get('agreeToHomeVisit')?.invalid && this.adoptionForm.get('agreeToTerms')?.invalid)) {
+            this.adoptionForm.updateValueAndValidity();
+            console.log(this.adoptionForm.errors);
+            if (this.getErrorsCount() <= 2 && this.adoptionForm.get('agreeToHomeVisit')?.invalid && this.adoptionForm.get('agreeToTerms')?.invalid) {
                 this.currentStep.update(_ => 4);
             }
 
         })
+    }
+
+    getErrorsCount(){
+        console.log(this.adoptionForm.errors);
+        Object.entries(this.adoptionForm.controls).forEach(([key, value]) => {
+            if (value.errors) {
+                console.log(key, value.errors);
+            }
+        })
+
+        return Object.entries(this.adoptionForm.controls).map(([key, value]) => value.errors).flat().length;
     }
 
     ngOnInit() {
@@ -703,7 +709,6 @@ export class AdoptionFormComponent {
                 this.adoptionForm.get('phone')?.valid &&
                 this.adoptionForm.get('street')?.valid &&
                 this.adoptionForm.get('city')?.valid &&
-                this.adoptionForm.get('state')?.valid &&
                 this.adoptionForm.get('zipCode')?.valid
             ) || false;
         } else if (step === 2) {

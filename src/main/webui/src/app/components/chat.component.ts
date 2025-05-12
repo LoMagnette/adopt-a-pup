@@ -51,7 +51,9 @@ import {MarkdownComponent} from "ngx-markdown";
                         <div class="message" [class.user-message]="message.sender === 'user'"
                              [class.bot-message]="message.sender === 'bot'">
                             <div class="message-content">
-                                <markdown>{{ message.text }}</markdown>
+                                <p>
+                                    <markdown>{{ message.text }}</markdown>
+                                </p>
                                 <span class="message-time">{{ formatTime(message.timestamp) }}</span>
                             </div>
                         </div>
@@ -121,7 +123,7 @@ import {MarkdownComponent} from "ngx-markdown";
         right: 20px;
         z-index: 1000;
       }
-      
+
 
       .chat-container {
         display: flex;
@@ -135,6 +137,7 @@ import {MarkdownComponent} from "ngx-markdown";
         transition: all 0.3s ease;
 
       }
+
       .message-content img {
         max-width: 150px;
       }
@@ -499,7 +502,9 @@ export class ChatComponent {
                 if (value.category) {
                     if ((route === "" && value.category !== 'COMPANY') ||
                         (route.includes("puppies") && value.category !== 'PUPPY') ||
-                        (route.includes("adopt" ) && value.category !== 'ADOPTION')) {
+                        (!route.includes("puppies") && value.category === 'PUPPY') ||
+                        (route.includes("adopt") && value.category !== 'ADOPTION') ||
+                        (!route.includes("adopt") && value.category === 'ADOPTION')) {
 
                         this.router.navigate([this.getRoute(value.category)]);
                     }
@@ -515,7 +520,7 @@ export class ChatComponent {
             case "PUPPY":
                 return "/puppies";
             case "ADOPTION":
-                return "/adoption";
+                return "/adopt";
             default:
                 return "/";
         }
