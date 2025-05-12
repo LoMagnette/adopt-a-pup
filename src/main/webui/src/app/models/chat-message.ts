@@ -3,5 +3,6 @@ export interface ChatMessage<T> {
     data?:T
     category?:'PUPPY'|'ADOPTION'|'COMPANY'
     sender: 'user' | 'bot';
+    htmlContent?: string;
     timestamp: Date;
 }

@@ -14,6 +14,7 @@ export class AdoptionService {
 
     selectedPuppy = signal<Puppy | null>(null);
     adoptionForm = this.adoptionFormData.asReadonly();
+    htmlContent = signal<string|undefined>(undefined);
 
     saveFormData(formData: AdoptionForm) {
         this.adoptionFormData.set(formData);
@@ -68,6 +69,15 @@ export class AdoptionService {
             }
         }
         return {};
+    }
+
+    getSummary(form:AdoptionForm){
+        this.http.post<string>('/api/adoption/summary', form,{
+            responseType: 'text' as 'json' // TypeScript workaround
+        }).subscribe(response => {
+            console.log('response', response);
+            this.htmlContent.set(response);
+        })
     }
 
     toAdoptionForm(form: any) :Partial<AdoptionForm> {

@@ -1,9 +1,10 @@
-import {Component, effect, inject, input, signal} from '@angular/core';
+import {Component, computed, effect, inject, input, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AdoptionService} from '../services/adoption.service';
 import {AdoptionForm} from '../models/adoption-form';
 import {PuppyService} from "../services/puppy.service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 
 @Component({
@@ -282,54 +283,8 @@ import {PuppyService} from "../services/puppy.service";
                             </ul>
                         </div>
                     </div>
-
                     <div class="form-summary">
-                        <h3>Application Summary</h3>
-                        <p>Please review your information before submitting:</p>
-
-                        <div class="summary-section">
-                            <h4>Personal Information</h4>
-                            <p>
-                                <strong>Name:</strong> {{ adoptionForm.get('firstName')?.value }} {{ adoptionForm.get('lastName')?.value }}
-                            </p>
-                            <p><strong>Contact:</strong> {{ adoptionForm.get('email')?.value }}
-                                | {{ adoptionForm.get('phone')?.value }}</p>
-                            <p><strong>Address:</strong> {{ adoptionForm.get('street')?.value }}
-                                , {{ adoptionForm.get('city')?.value }}
-                                , {{ adoptionForm.get('state')?.value }} {{ adoptionForm.get('zipCode')?.value }}</p>
-                        </div>
-
-                        <div class="summary-section">
-                            <h4>Household Information</h4>
-                            <p><strong>Housing:</strong> {{ adoptionForm.get('housingType')?.value }}
-                                ({{ adoptionForm.get('ownOrRent')?.value === 'own' ? 'Owner' : 'Renter' }})</p>
-                            <p>
-                                <strong>Yard:</strong> {{ adoptionForm.get('hasYard')?.value ? 'Yes' : 'No' }}{{ adoptionForm.get('hasYard')?.value && adoptionForm.get('yardFenced')?.value ? ' (Fenced)' : '' }}
-                            </p>
-                            <p><strong>Household members:</strong> {{ adoptionForm.get('householdMembers')?.value }}</p>
-                            @if (adoptionForm.get('childrenAges')?.value) {
-                                <p><strong>Children ages:</strong> {{ adoptionForm.get('childrenAges')?.value }}</p>
-                            }
-                        </div>
-
-                        <div class="summary-section">
-                            <h4>Lifestyle Information</h4>
-                            <p><strong>Activity level:</strong> {{ adoptionForm.get('activityLevel')?.value }}</p>
-                            <p><strong>Hours puppy will be alone
-                                daily:</strong> {{ adoptionForm.get('hoursAlonePerDay')?.value }}</p>
-                            <p><strong>Previous pet
-                                experience:</strong> {{ adoptionForm.get('previousPets')?.value ? 'Yes' : 'No' }}</p>
-                            <p><strong>Current pets:</strong> {{ adoptionForm.get('hasPets')?.value ? 'Yes' : 'No' }}
-                            </p>
-                            @if (adoptionForm.get('hasPets')?.value && adoptionForm.get('petDetails')?.value) {
-                                <p><strong>Pet details:</strong> {{ adoptionForm.get('petDetails')?.value }}</p>
-                            }
-                        </div>
-                        <div class="summary-section">
-                            <h4>Permit Information</h4>
-                            <p><strong>Permit number:</strong> {{ adoptionForm.get('permitNumber')?.value }}</p>
-                            <p><strong>Expiry date:</strong> {{ adoptionForm.get('permitExpiryDate')?.value }}</p>
-                        </div>
+                        <div [innerHTML]="extraHtml()"></div>
                     </div>
                 }
 
@@ -340,7 +295,7 @@ import {PuppyService} from "../services/puppy.service";
 
                     @if (currentStep() < 5) {
                         <button type="button" class="next-button" (click)="nextStep()"
-                                [disabled]="(getErrorsCount()-2 ===0 && currentStep()===4)">Next {{getErrorsCount()}}
+                                [disabled]="(getErrorsCount()-2 ===0 && currentStep()===4)">Next
                         </button>
                     } @else {
                         <button type="submit" class="submit-button" [disabled]="!adoptionForm.valid">Submit
@@ -566,12 +521,19 @@ export class AdoptionFormComponent {
     private router = inject(Router);
 
     private puppyService: PuppyService = inject(PuppyService);
+    private domSanitizer: DomSanitizer = inject(DomSanitizer);
 
 
     id = input.required<string>();
 
     breeds = signal([]);
     currentStep = signal<number>(1);
+    extraHtml = computed(() => {
+        const htmlContent = this.adoptionService.htmlContent();
+        if(htmlContent)
+            return this.domSanitizer.bypassSecurityTrustHtml(htmlContent)
+        return '';
+    });
 
     adoptionForm = new FormGroup({
         // Personal Info
@@ -682,6 +644,10 @@ export class AdoptionFormComponent {
         if (this.isCurrentStepValid() || this.currentStep() < 4) {
             this.currentStep.update(step => step + 1);
             window.scrollTo(0, 0);
+        }
+        console.log(this.currentStep(), this.extraHtml())
+        if(this.currentStep() === 4 && this.extraHtml() === '') {
+            this.adoptionService.getSummary(this.adoptionService.toAdoptionForm(this.adoptionForm.getRawValue()) as unknown as AdoptionForm);
         }
     }
 

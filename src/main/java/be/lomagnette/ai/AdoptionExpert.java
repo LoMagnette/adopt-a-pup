@@ -80,4 +80,21 @@ public interface AdoptionExpert {
             """
     )
     String success();
+
+    @UserMessage("""
+            You are given a user request containing information to be displayed on a website. Your task is to generate a clean, well-structured, and visually appealing HTML fragment (not a full HTML document).
+            
+            Follow these strict instructions:
+                1.	Use semantic HTML elements (<section>, <h2>, <p>, <ul>, etc.) to structure the content.
+                2.	Organize the information into logical subsections, each with clear headings and grouped content.
+                3.	Add minimal inline styling (e.g., padding, margin, font-weight) or use descriptive class names (like "highlight", "section-header", etc.) to enhance readability and visual structure — do not use embedded <style> tags.
+                4.	Do not include <html>, <head>, or <body> tags. This is a fragment meant to be embedded into an existing page.
+                5.	Do not output any Markdown or formatting blocks (like ```html). Return only the raw HTML fragment.
+                6.	Use only the content provided — do not invent or infer any missing data.
+            
+            Your goal is to produce a fragment that looks polished, clear, and easy to integrate into a styled page.
+            ----
+            request: {form}
+            """)
+    String generateSummary(AdoptionRequest form);
 }

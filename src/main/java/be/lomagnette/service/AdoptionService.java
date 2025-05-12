@@ -30,7 +30,7 @@ public class AdoptionService {
         updatedForm.setPuppy(form.data().getPuppy());
         var validations = validator.validate(updatedForm);
         if (validations.isEmpty()) {
-            return new ChatMessage<AdoptionRequest>(expert.success(), updatedForm, RequestCategory.ADOPTION);
+            return new ChatMessage<AdoptionRequest>(expert.success(), updatedForm, RequestCategory.ADOPTION, expert.generateSummary(updatedForm));
         }else{
             var humanReadableErrors = this.expert.getHumanReadableErrors(validations);
             var answer = this.expert.helpUser(userService.getUser().id().toString(), humanReadableErrors, form.text());

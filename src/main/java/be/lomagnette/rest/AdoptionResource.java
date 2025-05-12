@@ -1,11 +1,13 @@
 package be.lomagnette.rest;
 
+import be.lomagnette.ai.AdoptionExpert;
 import be.lomagnette.entities.AdoptionRequest;
 import be.lomagnette.service.AdoptionService;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 
 import java.util.List;
 
@@ -13,9 +15,11 @@ import java.util.List;
 public class AdoptionResource {
 
     private final AdoptionService service;
+    private final AdoptionExpert expert;
 
-    public AdoptionResource(AdoptionService service) {
+    public AdoptionResource(AdoptionService service, AdoptionExpert expert) {
         this.service = service;
+        this.expert = expert;
     }
 
     @POST
@@ -34,5 +38,12 @@ public class AdoptionResource {
     @POST
     public ChatMessage<AdoptionRequest> chat(ChatMessage<AdoptionRequest> form) {
         return this.service.chat(form);
+    }
+
+    @Path("summary")
+    @Produces("text/plain")
+    @POST
+    public String help(AdoptionRequest request) {
+        return this.expert.generateSummary(request);
     }
 }

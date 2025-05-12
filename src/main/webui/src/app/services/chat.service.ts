@@ -53,6 +53,7 @@ export class ChatService {
                         this.puppyService.filter.set(response.data);
                     }else if (response.category === 'ADOPTION') {
                         this.adoptionService.setFormData(response.data);
+                        this.adoptionService.htmlContent.set(response.htmlContent);
                     }
                 }
             })
