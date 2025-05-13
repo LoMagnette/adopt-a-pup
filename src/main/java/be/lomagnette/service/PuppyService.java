@@ -18,20 +18,24 @@ public class PuppyService {
 
     private final PuppyExpert expert;
     private final UserService userService;
+    private final ChatService chatService;
     private final PuppyRepository puppyRepository;
     private final DogIdentification dogIdentification;
 
     public PuppyService(PuppyExpert expert,
                         UserService userService,
+                        ChatService chatService,
                         PuppyRepository puppyRepository,
                         DogIdentification dogIdentification) {
         this.expert = expert;
         this.userService = userService;
+        this.chatService = chatService;
         this.puppyRepository = puppyRepository;
         this.dogIdentification = dogIdentification;
     }
 
     public ChatMessage<PuppySearchForm> chat(ChatMessage<PuppySearchForm> form, File file) {
+        chatService.storeQuestions(form.text());
         var extraInfo="";
         if(file != null){
            extraInfo = dogIdentification.describeDog(file);

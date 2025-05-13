@@ -54,7 +54,7 @@ public class ChatService {
         return new ChatMessage<>(answer, null, category);
     }
 
-    private void storeQuestions(String question){
+    public void storeQuestions(String question){
         var documentSplitter = DocumentSplitters.recursive(500, 100);
         var doc = Document.from(question, Metadata.from("user", userService.getUser().id().toString()));
         var segments = documentSplitter.split(doc);

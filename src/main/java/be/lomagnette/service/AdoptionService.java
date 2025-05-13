@@ -13,14 +13,20 @@ public class AdoptionService {
     private final AdoptionExpert expert;
     private final UserService userService;
     private final Validator validator;
+    private final ChatService chatService;
 
-    public AdoptionService(AdoptionExpert expert, UserService userService, Validator validator) {
+    public AdoptionService(AdoptionExpert expert,
+                           UserService userService,
+                           Validator validator,
+                           ChatService chatService) {
         this.expert = expert;
         this.userService = userService;
         this.validator = validator;
+        this.chatService = chatService;
     }
 
     public ChatMessage<AdoptionRequest> chat(ChatMessage<AdoptionRequest> form) {
+        chatService.storeQuestions(form.text());
         var updatedForm = this.expert.fillAdoptionForm(userService.getUser().id().toString(),form.text(), form.data());
         updatedForm.setPuppy(form.data().getPuppy());
         var validations = validator.validate(updatedForm);
