@@ -12,6 +12,7 @@ import io.quarkiverse.langchain4j.ToolBox;
 import java.util.List;
 
 @RegisterAiService(
+        modelName = "gpt4",
         retrievalAugmentor = UserMessagesRetrievalAugmentor.class,
         tools = {PuppyRepository.class}
 )

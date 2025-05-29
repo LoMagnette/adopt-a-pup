@@ -7,7 +7,7 @@ import io.quarkiverse.langchain4j.RegisterAiService;
 
 import java.util.UUID;
 
-@RegisterAiService
+@RegisterAiService(modelName = "local")
 public interface Bot {
 
     @SystemMessage("""

@@ -24,7 +24,7 @@ public class UserMessagesRetrievalAugmentor implements Supplier<RetrievalAugment
                 .embeddingModel(model)
                 .embeddingStore(store)
                 .filter(onlyUser)
-                .maxResults(5)
+                .maxResults(10)
                 .build();
         augmentor = DefaultRetrievalAugmentor
                 .builder()

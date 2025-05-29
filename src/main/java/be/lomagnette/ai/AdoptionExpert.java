@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @RegisterAiService(
+        modelName = "gpt4",
         retrievalAugmentor = UserMessagesRetrievalAugmentor.class
 )
 @SystemMessage("You are an AI named Pawtrick you help user filling the adoption form")

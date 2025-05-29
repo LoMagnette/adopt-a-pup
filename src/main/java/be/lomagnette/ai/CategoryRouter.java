@@ -3,7 +3,7 @@ package be.lomagnette.ai;
 import dev.langchain4j.service.UserMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
 
-@RegisterAiService()
+@RegisterAiService(modelName = "local")
 public interface CategoryRouter {
 
     @UserMessage("""
