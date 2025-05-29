@@ -71,7 +71,7 @@ import {DomSanitizer} from "@angular/platform-browser";
     `,
     styles: [`
       .chat-container {
-        height: 900px;
+        height: 80vh;
         display: flex;
         flex-direction: column;
         margin: 0 auto;

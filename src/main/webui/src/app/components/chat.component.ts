@@ -56,6 +56,17 @@ import {MarkdownComponent} from "ngx-markdown";
                             </div>
                         </div>
                     }
+                    @if (isTyping()) {
+                        <div class="message-wrapper agent">
+                            <div class="message typing">
+                                <div class="typing-indicator">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
 
                 <!-- Chat input -->
@@ -403,6 +414,77 @@ import {MarkdownComponent} from "ngx-markdown";
         font-size: 13px;
       }
 
+      .typing {
+        padding: 1rem !important;
+      }
+
+      .typing-indicator {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+      }
+
+      .typing-indicator span {
+        width: 8px;
+        height: 8px;
+        background: #9ca3af;
+        border-radius: 50%;
+        animation: typing 1.4s infinite ease-in-out;
+      }
+
+      .typing-indicator span:nth-child(1) {
+        animation-delay: -0.32s;
+      }
+
+      .typing-indicator span:nth-child(2) {
+        animation-delay: -0.16s;
+      }
+
+      @keyframes typing {
+        0%, 80%, 100% {
+          transform: scale(0);
+          opacity: 0.5;
+        }
+        40% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .message-wrapper {
+        display: flex;
+        margin-bottom: 1rem;
+      }
+
+      .message-wrapper.user {
+        justify-content: flex-end;
+      }
+
+      .message-wrapper.agent {
+        justify-content: flex-start;
+      }
+
+      .message {
+        max-width: 70%;
+        padding: 0.75rem 1rem;
+        border-radius: 18px;
+        position: relative;
+      }
+
+      .message-wrapper.user .message {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-bottom-right-radius: 4px;
+      }
+
+      .message-wrapper.agent .message {
+        background: white;
+        color: #374151;
+        border: 1px solid #e5e7eb;
+        border-bottom-left-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+
       @media (max-width: 576px) {
         .chat-container {
           width: 100%;
@@ -436,6 +518,7 @@ export class ChatComponent {
     messages = this.chatService.messages;
     currentMessage = signal<string>('');
     selectedFiles = signal<File[]>([]);
+    isTyping = signal(false);
 
     @ViewChild('chatMessages') chatMessagesEl!: ElementRef;
     @ViewChild('fileInput') fileInput!: ElementRef;
@@ -481,6 +564,7 @@ export class ChatComponent {
     sendMessage(): void {
         // Don't send if there's no message and no files
         if (!this.currentMessage() && this.selectedFiles().length === 0) return;
+        this.isTyping.set(true);
         const message = this.currentMessage();
         this.currentMessage.set('');
         const route = this.router.url;
@@ -489,6 +573,7 @@ export class ChatComponent {
         this.chatService.sendMessage(message, files).subscribe(value => {
                 //TODO
                 this.scrollToBottom();
+                this.isTyping.set(false);
                 if (value.category) {
                     if ((route === "" && value.category !== 'COMPANY') ||
                         (route.includes("puppies") && value.category !== 'PUPPY') ||
