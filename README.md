@@ -112,3 +112,15 @@ Quinoa codestart added a tiny Vite app in src/main/webui. The page is configured
 Easily start your REST Web Services
 
 [Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+
+
+### Message only chatbot adoption
+```
+Can you help me fill this form. I own a house with a fenced yard. 
+It's located chaussée de Charleroi 63 at Gembloux. 
+We're are 3 in the house including my 4 years old. 
+I've own a dog before. 
+My permit number is 1234567890 and it expires the 2nd of may 2026.
+The puppy will be alone on average 8hours per day.
+We consider to have a high activity level.
+```
