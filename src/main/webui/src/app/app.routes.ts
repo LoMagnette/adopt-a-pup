@@ -7,6 +7,8 @@ import {PuppyDetailComponent} from './components/puppy-detail.component';
 import {AboutComponent} from './components/about.component';
 import {AdoptionFormComponent} from './components/adoption-form.component';
 import {SuccessComponent} from './components/success.component';
+import {ChatComponent} from "./components/chat.component";
+import {MaxiChatComponent} from "./components/maxi-chat.component";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },

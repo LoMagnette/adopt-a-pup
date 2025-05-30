@@ -41,7 +41,7 @@ export class ChatService {
         const url = this.getUrl();
         const message = this.getMessage(text, files);
         return this.http.post<ChatMessage<any>>(url, message).pipe(tap(response => {
-                this.addBotMessage(response.text);
+                this.addBotMessage(response.text, response.htmlContent);
                 if(response.data) {
                     if (response.category === 'PUPPY') {
                         const form:PuppyFilters = response.data;
@@ -61,13 +61,14 @@ export class ChatService {
 
     }
 
-    addBotMessage(text: string): void {
+    addBotMessage(text: string, htmlContent?:string): void {
         this._messages.set([
             ...this.messages(),
             {
                 text,
                 sender: 'bot',
-                timestamp: new Date()
+                timestamp: new Date(),
+                htmlContent
             }
         ]);
     }

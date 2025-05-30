@@ -1,6 +1,7 @@
 package be.lomagnette.entities;
 
 import be.lomagnette.rest.PuppySearchForm;
+import dev.langchain4j.model.output.structured.Description;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import jakarta.persistence.*;
@@ -12,6 +13,7 @@ public class Puppy extends PanacheEntity {
 
     public String name;
     public String breed;
+    @Description("the age of the puppy in month")
     public int age;
     @Enumerated(EnumType.STRING)
     public Size size;
