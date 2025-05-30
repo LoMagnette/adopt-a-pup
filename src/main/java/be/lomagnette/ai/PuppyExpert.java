@@ -34,7 +34,7 @@ public interface PuppyExpert {
     PuppySearchForm fillForm(@MemoryId String id, String message, PuppySearchForm form, String extraInfo);
 
     @UserMessage("""
-            - Get all the good with qualities availabe.
+            - Get all the good with qualities available.
             - Filter all those qualities based on the user message
             - return the filtered list as a comma separated list
             
