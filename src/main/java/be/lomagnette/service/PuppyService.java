@@ -8,10 +8,16 @@ import be.lomagnette.entities.Puppy;
 import be.lomagnette.entities.PuppyRepository;
 import be.lomagnette.rest.ChatMessage;
 import be.lomagnette.rest.PuppySearchForm;
+import dev.langchain4j.data.image.Image;
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.apache.tika.Tika;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.Base64;
 
 @ApplicationScoped
 public class PuppyService {
@@ -21,12 +27,13 @@ public class PuppyService {
     private final ChatService chatService;
     private final PuppyRepository puppyRepository;
     private final DogIdentification dogIdentification;
+    private final Tika tika = new Tika();
 
     public PuppyService(PuppyExpertAgent expert,
                         UserService userService,
                         ChatService chatService,
                         PuppyRepository puppyRepository,
-                        DogIdentification dogIdentification) {
+                        DogIdentification dogIdentification){
         this.expert = expert;
         this.userService = userService;
         this.chatService = chatService;
@@ -34,18 +41,35 @@ public class PuppyService {
         this.dogIdentification = dogIdentification;
     }
 
-    public ChatMessage<PuppySearchForm> chat(ChatMessage<PuppySearchForm> form, File file) {
+    public ChatMessage<PuppySearchForm> chat(ChatMessage<PuppySearchForm> form, File file) throws IOException {
         chatService.storeQuestions(form.text());
-        var extraInfo="";
-        if(file != null){
-           extraInfo = dogIdentification.describeDog(file);
-        }
+        var extraInfo = extractExtraInfo(file);
+
         var criteria = expert.fillForm(userService.getUser().id().toString(), form.text(), form.data(), extraInfo);
         var goodWithValues = puppyRepository.listAllGoodWithValues().stream().map(String::toLowerCase).toList();
         var goodWithFound = criteria.goodWith() == null ? new String[0] : criteria.goodWith();
         var filteredGoodWith = Arrays.stream(goodWithFound).filter(goodWithValues::contains).toArray(String[]::new);
         criteria = PuppySearchForm.setGoodWith(criteria, filteredGoodWith);
+
         var answer = expert.guidePuppySelection(form.text(), Puppy.search(criteria));
         return new ChatMessage<>(answer, criteria, RequestCategory.PUPPY);
+    }
+
+    public String extractExtraInfo(File file) throws IOException {
+        var fileType = tika.detect(file);
+        Log.info(fileType);
+        return switch (fileType){
+            case "image/jpeg" -> getImageInfo(file);
+            default ->  "";
+        };
+    }
+
+    public String getImageInfo(File file) throws IOException {
+        var imageData = Files.readAllBytes(file.toPath());
+        String base64Img = Base64.getEncoder().encodeToString(imageData);
+        var image = Image.builder().base64Data(base64Img).build();
+        var s = this.dogIdentification.describeDog(file);
+        Log.info(s);
+        return s;
     }
 }
