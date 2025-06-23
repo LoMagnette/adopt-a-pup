@@ -12,7 +12,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.22.2</quarkus.platform.version>
+        <quarkus.platform.version>3.23.4</quarkus.platform.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.5.2</surefire-plugin.version>
     </properties>
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>io.quarkiverse.langchain4j</groupId>
             <artifactId>quarkus-langchain4j-core</artifactId>
-            <version>0.26.2</version>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -46,12 +46,12 @@
         <dependency>
             <groupId>io.quarkiverse.langchain4j</groupId>
             <artifactId>quarkus-langchain4j-easy-rag</artifactId>
-            <version>0.26.2</version>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>io.quarkiverse.langchain4j</groupId>
             <artifactId>quarkus-langchain4j-pgvector</artifactId>
-            <version>0.26.2</version>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -65,7 +65,7 @@
         <dependency>
             <groupId>io.quarkiverse.langchain4j</groupId>
             <artifactId>quarkus-langchain4j-ollama</artifactId>
-            <version>0.26.2</version>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -90,7 +90,7 @@
         <dependency>
             <groupId>io.quarkiverse.langchain4j</groupId>
             <artifactId>quarkus-langchain4j-openai</artifactId>
-            <version>0.26.2</version>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
