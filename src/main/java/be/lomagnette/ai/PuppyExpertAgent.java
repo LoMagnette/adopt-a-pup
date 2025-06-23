@@ -17,7 +17,7 @@ import java.util.List;
         tools = {PuppyRepository.class}
 )
 @SystemMessage("You are an AI named Pawtrick you help user finding the best puppy based on the information they provide")
-public interface PuppyExpert {
+public interface PuppyExpertAgent {
 
     @UserMessage("""
             Fill the the provided object based on the information given by the user.

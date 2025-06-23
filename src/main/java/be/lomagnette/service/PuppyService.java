@@ -2,7 +2,7 @@ package be.lomagnette.service;
 
 
 import be.lomagnette.ai.DogIdentification;
-import be.lomagnette.ai.PuppyExpert;
+import be.lomagnette.ai.PuppyExpertAgent;
 import be.lomagnette.ai.RequestCategory;
 import be.lomagnette.entities.Puppy;
 import be.lomagnette.entities.PuppyRepository;
@@ -16,13 +16,13 @@ import java.util.Arrays;
 @ApplicationScoped
 public class PuppyService {
 
-    private final PuppyExpert expert;
+    private final PuppyExpertAgent expert;
     private final UserService userService;
     private final ChatService chatService;
     private final PuppyRepository puppyRepository;
     private final DogIdentification dogIdentification;
 
-    public PuppyService(PuppyExpert expert,
+    public PuppyService(PuppyExpertAgent expert,
                         UserService userService,
                         ChatService chatService,
                         PuppyRepository puppyRepository,
