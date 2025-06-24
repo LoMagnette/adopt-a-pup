@@ -3,6 +3,7 @@ package be.lomagnette.ai;
 import be.lomagnette.entities.Puppy;
 import be.lomagnette.entities.PuppyRepository;
 import be.lomagnette.rest.PuppySearchForm;
+import dev.langchain4j.data.image.Image;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
@@ -73,4 +74,13 @@ public interface PuppyExpertAgent {
             """)
     @ToolBox(PuppyRepository.class)
     List<String> matchingQualities(String message);
+
+
+    @UserMessage("""
+             You are given an image containing a dog. Your task is to analyze the image and do the following:
+                 1.	Identify the most likely breed of the dog in the image.
+                 2.	Provide a brief description of the breed, including common characteristics (e.g., temperament, size, typical coat, and behavior).
+                 3.	If you are unsure of the exact breed, list the top 2–3 most likely breeds with a confidence estimate for each.
+            """)
+    String describeDog(Image image);
 }

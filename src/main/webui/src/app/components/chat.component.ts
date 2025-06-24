@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {ChatService} from "../services/chat.service";
 import {Router} from "@angular/router";
 import {MarkdownComponent} from "ngx-markdown";
+import {AudioRecorderService} from "../services/audio-recorder.service";
 
 
 @Component({
@@ -80,6 +81,22 @@ import {MarkdownComponent} from "ngx-markdown";
                                 (keyup.enter)="sendMessage()"
                         >
 
+
+                        @if (isRecording()) {
+                            <button class="attachment-button" (click)="toggleRecording()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     viewBox="0 0 16 16">
+                                    <path d="M4.121 0a1 1 0 0 0-.707.293L.293 3.414A1 1 0 0 0 0 4.121v7.758a1 1 0 0 0 .293.707l3.121 3.121a1 1 0 0 0 .707.293h7.758a1 1 0 0 0 .707-.293l3.121-3.121a1 1 0 0 0 .293-.707V4.121a1 1 0 0 0-.293-.707L12.879.293A1 1 0 0 0 12.172 0H4.121zM5 5h6v6H5V5z"/>
+                                </svg>
+                            </button>
+                        } @else {
+                            <button class="attachment-button" (click)="toggleRecording()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     viewBox="0 0 16 16">
+                                    <path d="M1.5 8a.5.5 0 0 1 .5-.5h1v1h-1a.5.5 0 0 1-.5-.5zm2.5-2a.5.5 0 0 1 .5-.5h1v5h-1a.5.5 0 0 1-.5-.5V6zm3-3a.5.5 0 0 1 .5-.5h1v11h-1a.5.5 0 0 1-.5-.5V3zm3 2a.5.5 0 0 1 .5-.5h1v7h-1a.5.5 0 0 1-.5-.5V5zm3 2a.5.5 0 0 1 .5-.5h1v3h-1a.5.5 0 0 1-.5-.5V7z"/>
+                                </svg>
+                            </button>
+                        }
                         <!-- File attachment button -->
                         <button class="attachment-button" (click)="fileInput.click()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -106,6 +123,11 @@ import {MarkdownComponent} from "ngx-markdown";
                     </button>
                 </div>
 
+                @if (audio()) {
+                    <div class="selected-file">
+                        <button (click)="download()">⬇️ Download Recording</button>
+                    </div>
+                }
                 <!-- Selected files preview -->
                 @if (selectedFiles().length > 0) {
                     <div class="selected-files">
@@ -450,6 +472,7 @@ import {MarkdownComponent} from "ngx-markdown";
           opacity: 1;
         }
       }
+
       .message-wrapper {
         display: flex;
         margin-bottom: 1rem;
@@ -512,6 +535,7 @@ export class ChatComponent {
     // State signals
     chatService = inject(ChatService);
     router = inject(Router);
+    audioRecorder = inject(AudioRecorderService);
 
     isMinimized = signal<boolean>(true); // Start minimized as a FAB
     isOnline = signal<boolean>(true);
@@ -519,6 +543,8 @@ export class ChatComponent {
     currentMessage = signal<string>('');
     selectedFiles = signal<File[]>([]);
     isTyping = signal(false);
+    isRecording = this.audioRecorder.isRecording;
+    audio = this.audioRecorder.audio;
 
     @ViewChild('chatMessages') chatMessagesEl!: ElementRef;
     @ViewChild('fileInput') fileInput!: ElementRef;
@@ -611,5 +637,24 @@ export class ChatComponent {
     // Format timestamp for display
     formatTime(date: Date): string {
         return date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    }
+
+    toggleRecording(): void {
+        this.audioRecorder.toggle()
+    }
+
+    download() {
+        const blob = this.audioRecorder.audioFile();
+        if (!blob) {
+            console.warn('No audio blob available to download');
+            return;
+        }
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'recording.webm';
+        a.click();
+        URL.revokeObjectURL(url);
     }
 }
