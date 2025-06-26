@@ -72,9 +72,11 @@ public class PuppyResource {
     @Path("chat")
     @Consumes("multipart/form-data")
     @POST
-    public Response chat(@RestForm @PartType(MediaType.APPLICATION_JSON) ChatMessage<PuppySearchForm> form, @RestForm("file") File file) {
+    public Response chat(@RestForm @PartType(MediaType.APPLICATION_JSON) ChatMessage<PuppySearchForm> form,
+                         @RestForm("file") File file,
+                         @RestForm("audio") File audio) {
         try {
-            return Response.ok(this.service.chat(form, file)).build();
+            return Response.ok(this.service.chat(form, file, audio)).build();
         } catch (IOException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }

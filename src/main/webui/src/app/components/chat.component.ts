@@ -589,14 +589,14 @@ export class ChatComponent {
     // Method to send a message
     sendMessage(): void {
         // Don't send if there's no message and no files
-        if (!this.currentMessage() && this.selectedFiles().length === 0) return;
+        if (!this.currentMessage() && this.selectedFiles().length === 0 && !this.audioRecorder.audioFile()) return;
         this.isTyping.set(true);
         const message = this.currentMessage();
         this.currentMessage.set('');
         const route = this.router.url;
         const files = this.selectedFiles();
         this.selectedFiles.set([]);
-        this.chatService.sendMessage(message, files).subscribe(value => {
+        this.chatService.sendMessage(message, files, this.audioRecorder.audioFile()).subscribe(value => {
                 //TODO
                 this.scrollToBottom();
                 this.isTyping.set(false);

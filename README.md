@@ -124,3 +124,10 @@ My permit number is 1234567890 and it expires the 2nd of may 2026.
 The puppy will be alone on average 8hours per day.
 We consider to have a high activity level.
 ```
+
+
+### TODO's
+- send the user message back (when using voice/files)
+- integrate mcp
+- integrate audio response
+- avatar answering

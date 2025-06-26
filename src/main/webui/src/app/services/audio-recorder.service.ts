@@ -1,4 +1,3 @@
-// audio-recorder.service.ts
 import { Injectable, Signal, computed, effect, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
@@ -7,21 +6,18 @@ export class AudioRecorderService {
     private stream?: MediaStream;
     private audioChunks: Blob[] = [];
 
-    // Signals to expose and mutate state
+    // Internal signals
     private command = signal<'start' | 'stop' | null>(null);
     private recording = signal(false);
     private audioUrl = signal<string | null>(null);
     private audioBlob = signal<Blob | null>(null);
 
-    // Publicly exposed signals
-    isRecording = this.recording.asReadonly()
-    audio = this.audioUrl.asReadonly()
-    audioFile=  this.audioBlob.asReadonly();
-
-
+    // Public signals
+    readonly isRecording: Signal<boolean> = this.recording.asReadonly();
+    readonly audio: Signal<string | null> = this.audioUrl.asReadonly();
+    readonly audioFile: Signal<Blob | null> = this.audioBlob.asReadonly();
 
     constructor() {
-        // Reactively respond to changes in `command`
         effect(() => {
             const cmd = this.command();
             if (cmd === 'start') this.initAndStart();
@@ -35,42 +31,45 @@ export class AudioRecorderService {
 
     reset(): void {
         this.audioUrl.set(null);
+        this.audioBlob.set(null);
     }
 
-    // Internals
+    // === Internals ===
 
     private async initAndStart(): Promise<void> {
         try {
-            console.log("Starting recording");
             this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            this.mediaRecorder = new MediaRecorder(this.stream);
+            console.log('Stream:', this.stream);
+            console.log('Tracks:', this.stream.getTracks());
             this.audioChunks = [];
+            this.mediaRecorder = new MediaRecorder(this.stream);
 
             this.mediaRecorder.ondataavailable = (e) => {
-                if (e.data.size > 0) this.audioChunks.push(e.data);
+                console.log(e);
+                if (e.data.size > 0) {
+                    console.log(e.data);
+                    this.audioChunks.push(e.data);
+                }
             };
 
             this.mediaRecorder.onstop = () => {
                 const blob = new Blob(this.audioChunks, { type: 'audio/webm' });
+                this.audioBlob.set(blob);
                 this.audioUrl.set(URL.createObjectURL(blob));
                 this.cleanup();
             };
 
-            this.mediaRecorder.start();
+            this.mediaRecorder.start(); // Can also pass interval: .start(1000)
             this.recording.set(true);
-            console.log("Starting recording", this.recording());
         } catch (err) {
-            console.error('Failed to start recording', err);
+            console.error('Could not start audio recording:', err);
         }
     }
 
     private stop(): void {
-        if (this.mediaRecorder) {
-            this.mediaRecorder.stop();
+        if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
+            this.mediaRecorder.stop(); // Triggers `ondataavailable` + `onstop`
             this.recording.set(false);
-            const blob = new Blob(this.audioChunks, { type: 'audio/webm' });
-            this.audioBlob.set(blob);
-            this.audioUrl.set(URL.createObjectURL(blob));
         }
     }
 

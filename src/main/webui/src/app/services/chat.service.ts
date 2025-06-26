@@ -36,10 +36,10 @@ export class ChatService {
     }
 
     // Add a user message and trigger a bot response
-    sendMessage(text: string, files: File[]) {
+    sendMessage(text: string, files: File[], audio:Blob|null) {
         this.addUserMessage(text);
         const url = this.getUrl();
-        const message = this.getMessage(text, files);
+        const message = this.getMessage(text, files, audio);
         return this.http.post<ChatMessage<any>>(url, message).pipe(tap(response => {
                 this.addBotMessage(response.text, response.htmlContent);
                 if(response.data) {
@@ -98,7 +98,7 @@ export class ChatService {
 
     }
 
-    private getMessage(text: string, files: File[]) {
+    private getMessage(text: string, files: File[], audio:Blob | null) {
         const currentRoute = this.router.url;
         if (!currentRoute) {
             return {text}
@@ -114,6 +114,9 @@ export class ChatService {
             formData.append('form', JSON.stringify({text, data:this.puppyService.filter()}));
             if(files.length > 0) {
                 formData.append('file', files[0]);
+            }
+            if(audio) {
+                formData.append('audio', audio);
             }
             return formData;
         } else {

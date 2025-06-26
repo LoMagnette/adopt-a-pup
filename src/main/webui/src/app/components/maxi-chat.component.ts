@@ -290,7 +290,7 @@ export class MaxiChatComponent implements AfterViewChecked {
         this.messageInput = '';
         this.isTyping.set(true);
 
-        this.chatService.sendMessage(message, []).subscribe(() => {
+        this.chatService.sendMessage(message, [], null).subscribe(() => {
             this.isTyping.set(false);
         });
     }
