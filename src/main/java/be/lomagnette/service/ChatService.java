@@ -9,10 +9,14 @@ import dev.langchain4j.model.embedding.EmbeddingModel;
 import io.quarkiverse.langchain4j.pgvector.PgVectorEmbeddingStore;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import java.time.Instant;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class ChatService {
 
+    private static final Logger LOG = Logger.getLogger(ChatService.class.getName());
 
     private final PgVectorEmbeddingStore store;
     private final EmbeddingModel model;
@@ -54,10 +58,28 @@ public class ChatService {
         return new ChatMessage<>(answer, null, category);
     }
 
-    public void storeQuestions(String question){
-        var documentSplitter = DocumentSplitters.recursive(500, 100);
-        var doc = Document.from(question, Metadata.from("user", userService.getUser().id().toString()));
-        var segments = documentSplitter.split(doc);
-        var embeddings = model.embedAll(segments);
+    @Transactional
+    public void storeQuestions(String question) {
+        try {
+            var documentSplitter = DocumentSplitters.recursive(500, 100);
+            var user = userService.getUser();
+            
+            var doc = Document.from(question, 
+                Metadata.from("user", user.id().toString())
+                       .put("timestamp", Instant.now().toString())
+                       .put("type", "user_question"));
+            
+            var segments = documentSplitter.split(doc);
+            var embeddings = model.embedAll(segments);
+            
+            // Actually store the embeddings in the vector database
+            store.addAll(embeddings.content(), segments);
+            
+            LOG.info("Stored " + segments.size() + " question segments for user " + user.id());
+            
+        } catch (Exception e) {
+            LOG.severe("Failed to store user question: " + e.getMessage());
+            throw new RuntimeException("Unable to store user question", e);
+        }
     }
 }
