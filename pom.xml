@@ -12,7 +12,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.23.4</quarkus.platform.version>
+        <quarkus.platform.version>3.26.4</quarkus.platform.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.5.2</surefire-plugin.version>
     </properties>
@@ -60,7 +60,7 @@
         <dependency>
             <groupId>io.quarkiverse.quinoa</groupId>
             <artifactId>quarkus-quinoa</artifactId>
-            <version>2.5.4</version>
+            <version>2.6.2</version>
         </dependency>
         <dependency>
             <groupId>io.quarkiverse.langchain4j</groupId>
@@ -95,7 +95,7 @@
         <dependency>
             <groupId>io.quarkiverse.tika</groupId>
             <artifactId>quarkus-tika</artifactId>
-            <version>2.1.0</version>
+            <version>2.2.1</version>
         </dependency>
         <dependency>
             <groupId>io.quarkiverse.langchain4j</groupId>
