@@ -7,16 +7,14 @@ import dev.langchain4j.data.document.Metadata;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import io.quarkiverse.langchain4j.pgvector.PgVectorEmbeddingStore;
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import java.time.Instant;
-import java.util.logging.Logger;
 
 @ApplicationScoped
 public class ChatService {
-
-    private static final Logger LOG = Logger.getLogger(ChatService.class.getName());
 
     private final PgVectorEmbeddingStore store;
     private final EmbeddingModel model;
@@ -75,10 +73,10 @@ public class ChatService {
             // Actually store the embeddings in the vector database
             store.addAll(embeddings.content(), segments);
             
-            LOG.info("Stored " + segments.size() + " question segments for user " + user.id());
+            Log.info("Stored " + segments.size() + " question segments for user " + user.id());
             
         } catch (Exception e) {
-            LOG.severe("Failed to store user question: " + e.getMessage());
+            Log.error("Failed to store user question: " + e.getMessage());
             throw new RuntimeException("Unable to store user question", e);
         }
     }
