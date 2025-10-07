@@ -8,7 +8,7 @@ import io.quarkiverse.langchain4j.RegisterAiService;
         modelName = "local",
         retrievalAugmentor = DocumentRetrievalAugmentor.class
 )
-public interface PuppyParadiseExpert {
+public interface PuppyParadiseAgent {
 
     @SystemMessage("""
             You are an AI named Pawtrick answering questions about puppy paradise.

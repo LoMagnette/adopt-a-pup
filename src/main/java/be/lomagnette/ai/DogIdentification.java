@@ -2,7 +2,7 @@ package be.lomagnette.ai;
 
 import dev.langchain4j.data.message.ImageContent;
 import dev.langchain4j.data.message.UserMessage;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.chat.request.ChatRequest;
 import io.quarkiverse.langchain4j.ModelName;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -19,7 +19,7 @@ public class DogIdentification {
 
     @Inject
     @ModelName("gpt4")
-    ChatLanguageModel chatModel;
+    ChatModel chatModel;
 
     public String generateDogName(String breed) {
         return chatModel.chat("Can you find a dog name for a dog of this breed :" + breed + "?");

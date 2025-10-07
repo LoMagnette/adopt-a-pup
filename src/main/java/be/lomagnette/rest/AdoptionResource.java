@@ -1,6 +1,6 @@
 package be.lomagnette.rest;
 
-import be.lomagnette.ai.AdoptionExpert;
+import be.lomagnette.ai.AdoptionAgent;
 import be.lomagnette.entities.AdoptionRequest;
 import be.lomagnette.service.AdoptionService;
 import jakarta.transaction.Transactional;
@@ -15,9 +15,9 @@ import java.util.List;
 public class AdoptionResource {
 
     private final AdoptionService service;
-    private final AdoptionExpert expert;
+    private final AdoptionAgent expert;
 
-    public AdoptionResource(AdoptionService service, AdoptionExpert expert) {
+    public AdoptionResource(AdoptionService service, AdoptionAgent expert) {
         this.service = service;
         this.expert = expert;
     }

@@ -7,10 +7,12 @@ import be.lomagnette.service.PuppyService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.reactive.PartType;
 import org.jboss.resteasy.reactive.RestForm;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Path("/puppies")
@@ -70,8 +72,14 @@ public class PuppyResource {
     @Path("chat")
     @Consumes("multipart/form-data")
     @POST
-    public ChatMessage<PuppySearchForm> chat(@RestForm @PartType(MediaType.APPLICATION_JSON) ChatMessage<PuppySearchForm> form, @RestForm("file") File file) {
-        return this.service.chat(form, file);
+    public Response chat(@RestForm @PartType(MediaType.APPLICATION_JSON) ChatMessage<PuppySearchForm> form,
+                         @RestForm("file") File file,
+                         @RestForm("audio") File audio) {
+        try {
+            return Response.ok(this.service.chat(form, file, audio)).build();
+        } catch (IOException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
 
     @Path("dog-names")

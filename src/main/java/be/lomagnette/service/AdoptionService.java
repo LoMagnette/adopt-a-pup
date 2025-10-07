@@ -1,6 +1,6 @@
 package be.lomagnette.service;
 
-import be.lomagnette.ai.AdoptionExpert;
+import be.lomagnette.ai.AdoptionAgent;
 import be.lomagnette.ai.RequestCategory;
 import be.lomagnette.entities.AdoptionRequest;
 import be.lomagnette.rest.ChatMessage;
@@ -10,12 +10,12 @@ import jakarta.validation.Validator;
 @ApplicationScoped
 public class AdoptionService {
 
-    private final AdoptionExpert expert;
+    private final AdoptionAgent expert;
     private final UserService userService;
     private final Validator validator;
     private final ChatService chatService;
 
-    public AdoptionService(AdoptionExpert expert,
+    public AdoptionService(AdoptionAgent expert,
                            UserService userService,
                            Validator validator,
                            ChatService chatService) {

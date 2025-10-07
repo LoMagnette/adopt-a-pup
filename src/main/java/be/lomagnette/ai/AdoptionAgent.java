@@ -17,7 +17,7 @@ import java.util.Set;
         retrievalAugmentor = UserMessagesRetrievalAugmentor.class
 )
 @SystemMessage("You are an AI named Pawtrick you help user filling the adoption form")
-public interface AdoptionExpert {
+public interface AdoptionAgent {
 
     @UserMessage("""
             Fill the the provided object based on the information given by the user and the one you can collect about him.
