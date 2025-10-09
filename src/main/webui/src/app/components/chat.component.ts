@@ -5,40 +5,16 @@ import {ChatService} from "../services/chat.service";
 import {Router} from "@angular/router";
 import {MarkdownComponent} from "ngx-markdown";
 import {AudioRecorderService} from "../services/audio-recorder.service";
+import {DogAnimationComponent} from "./dog-animation.component";
 
 
 @Component({
     selector: 'app-chat',
     standalone: true,
-    imports: [CommonModule, FormsModule, MarkdownComponent],
+    imports: [CommonModule, FormsModule, MarkdownComponent, DogAnimationComponent],
     template: `
         <div class="chat-container" [class.minimized]="isMinimized()">
-            @if (isMinimized()) {
-                <!-- FAB style button when minimized -->
-                <button class="fab-button" (click)="toggleMinimize()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                         viewBox="0 0 16 16">
-                        <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-                    </svg>
-                </button>
-            } @else {
-                <!-- Full chat interface when expanded -->
-                        <!-- Chat header -->
-                <div class="chat-header">
-                    <div class="chat-title">
-                        <div class="status-indicator" [class.online]="isOnline()"></div>
-                        <h3>Dog Support</h3>
-                    </div>
-                    <div class="chat-controls">
-                        <button class="minimize-button" (click)="toggleMinimize()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 viewBox="0 0 16 16">
-                                <path d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
+            @if (!isMinimized()) {
                 <!-- Chat messages -->
                 <div class="chat-messages" #chatMessages>
                     @if (messages().length === 0) {
@@ -80,8 +56,6 @@ import {AudioRecorderService} from "../services/audio-recorder.service";
                                 placeholder="Type a message..."
                                 (keyup.enter)="sendMessage()"
                         >
-
-
                         @if (isRecording()) {
                             <button class="attachment-button" (click)="toggleRecording()">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -146,6 +120,7 @@ import {AudioRecorderService} from "../services/audio-recorder.service";
                 }
             }
         </div>
+        <app-dog-animation (talkingChange)="toggleMinimize()"></app-dog-animation>
     `,
     styles: [`
       :host {
@@ -160,13 +135,38 @@ import {AudioRecorderService} from "../services/audio-recorder.service";
         display: flex;
         flex-direction: column;
         width: 600px;
-        height: 800px;
-        border-radius: 16px;
-        overflow: hidden;
+        height: 650px;
+        border-radius: 24px;
+        overflow: visible;
         box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
         background-color: white;
         transition: all 0.3s ease;
+        position: relative;
+      }
 
+      .chat-container::before {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        right: 135px;
+        width: 0;
+        height: 0;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-top: 15px solid white;
+      }
+
+      .chat-container::after {
+        content: '';
+        position: absolute;
+        bottom: -18px;
+        right: 133px;
+        width: 0;
+        height: 0;
+        border-left: 17px solid transparent;
+        border-right: 17px solid transparent;
+        border-top: 18px solid rgba(0, 0, 0, 0.1);
+        z-index: -1;
       }
 
       .message-content img {
@@ -178,6 +178,11 @@ import {AudioRecorderService} from "../services/audio-recorder.service";
         height: auto;
         background-color: transparent;
         box-shadow: none;
+      }
+
+      .chat-container.minimized::before,
+      .chat-container.minimized::after {
+        display: none;
       }
 
       .fab-button {
