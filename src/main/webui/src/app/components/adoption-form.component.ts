@@ -592,11 +592,11 @@ export class AdoptionFormComponent {
     }
 
     getErrorsCount(){
-        console.log(this.adoptionForm.errors);
+        //console.log(this.adoptionForm.errors);
         Object.entries(this.adoptionForm.controls).forEach(([key, value]) => {
-            if (value.errors) {
+            /*if (value.errors) {
                 console.log(key, value.errors);
-            }
+            }*/
         })
 
         return Object.entries(this.adoptionForm.controls).map(([_, value]) => value.errors).flat().length;

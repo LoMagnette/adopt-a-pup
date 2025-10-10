@@ -137,7 +137,21 @@ export class DogAnimationComponent {
   });
 
   constructor() {
+    this.talking.set(false);
     this.startAnimation();
+    effect(
+        () => {
+          const position = this.animationState();
+          console.log(position);
+          if(position === 'thinking') {
+            this.switchToThinking();
+          }else if(position === 'happy') {
+            this.switchToHappy();
+          }
+
+        }
+    )
+
   }
 
   private startAnimation() {

@@ -5,7 +5,7 @@ import {ChatService} from "../services/chat.service";
 import {Router} from "@angular/router";
 import {MarkdownComponent} from "ngx-markdown";
 import {AudioRecorderService} from "../services/audio-recorder.service";
-import {DogAnimationComponent} from "./dog-animation.component";
+import {AnimationState, DogAnimationComponent} from "./dog-animation.component";
 
 
 @Component({
@@ -120,7 +120,7 @@ import {DogAnimationComponent} from "./dog-animation.component";
                 }
             }
         </div>
-        <app-dog-animation (talkingChange)="toggleMinimize()"></app-dog-animation>
+        <app-dog-animation (talkingChange)="toggleMinimize()" [state]="dogState()"></app-dog-animation>
     `,
     styles: [`
       :host {
@@ -550,6 +550,7 @@ export class ChatComponent {
     isTyping = signal(false);
     isRecording = this.audioRecorder.isRecording;
     audio = this.audioRecorder.audio;
+    dogState = signal<AnimationState>('running');
 
     @ViewChild('chatMessages') chatMessagesEl!: ElementRef;
     @ViewChild('fileInput') fileInput!: ElementRef;
@@ -601,6 +602,8 @@ export class ChatComponent {
         const route = this.router.url;
         const files = this.selectedFiles();
         this.selectedFiles.set([]);
+        this.dogState.set('thinking');
+        console.log("switching state");
         this.chatService.sendMessage(message, files, this.audioRecorder.audioFile()).subscribe(value => {
                 //TODO
                 this.scrollToBottom();
@@ -616,6 +619,10 @@ export class ChatComponent {
                     }
 
                 }
+
+                const position = route.includes('adopt') ? 'rolling': 'standing';
+            console.log("route", route, position);
+                this.dogState.set(position);
             }
         )
     }
