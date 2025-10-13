@@ -353,8 +353,20 @@ import {PuppyFilters} from "../models/puppy-filters";
 
     .puppy-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 2.5rem;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    @media (max-width: 1200px) {
+      .puppy-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .puppy-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .puppy-card {
