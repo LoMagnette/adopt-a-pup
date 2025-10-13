@@ -2,9 +2,11 @@ package be.lomagnette.ai;
 
 import be.lomagnette.entities.AdoptionRequest;
 import be.lomagnette.service.UserService;
+import dev.langchain4j.agentic.Agent;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
+import dev.langchain4j.service.V;
 import io.quarkiverse.langchain4j.RegisterAiService;
 import io.quarkiverse.langchain4j.ToolBox;
 import jakarta.validation.ConstraintViolation;
@@ -43,9 +45,10 @@ public interface AdoptionAgent {
     @UserMessage("""
             You should try to answer the user questions about puppies adoption.
             You can should welcome any about the person that want to adopt a pup.
-            {message}
+            {{request}}
             """)
-    String chat(String message);
+    @Agent("An expert on puppy adoption")
+    String chat(@V("request") String message);
 
 
     @UserMessage("""

@@ -18,6 +18,7 @@ public record PuppySearchForm(
         boolean onlyAvailable,
         String searchTerm) {
 
+
     public static PuppySearchForm setGoodWith(PuppySearchForm form, String[] goodWith) {
         Integer minAge = form.minAge;
         Integer maxAge = form.maxAge;

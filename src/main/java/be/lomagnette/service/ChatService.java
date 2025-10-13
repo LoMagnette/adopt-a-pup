@@ -51,7 +51,7 @@ public class ChatService {
         var answer =  switch (category){
             case PUPPY -> puppyExpertAgent.chat(question.text());
             case ADOPTION -> adoptionAgent.chat(question.text());
-            case COMPANY -> paradiseExpert.chat(question.text());
+            case COMPANY, UNKNOWN -> paradiseExpert.chat(question.text());
         };
         return new ChatMessage<>(answer, null, category);
     }

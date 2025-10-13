@@ -1,7 +1,9 @@
 package be.lomagnette.ai;
 
+import dev.langchain4j.agentic.Agent;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
+import dev.langchain4j.service.V;
 import io.quarkiverse.langchain4j.RegisterAiService;
 
 @RegisterAiService(
@@ -17,7 +19,8 @@ public interface PuppyParadiseAgent {
             """)
     @UserMessage("""
             You should try to answer the user questions about puppy paradise.
-            {message}
+            {{request}}
             """)
-    public String chat(String message);
+    @Agent("A expert about the Puppy paradise site and services")
+    public String chat(@V("request") String message);
 }

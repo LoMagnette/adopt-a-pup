@@ -16,5 +16,6 @@ public enum RequestCategory {
             Content that provides information about the website itself, the company or organization behind it,
             policies, contact details, and general news or updates.
             """)
-    COMPANY
+    COMPANY,
+    UNKNOWN
 }

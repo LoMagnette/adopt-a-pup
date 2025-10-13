@@ -1,5 +1,6 @@
 package be.lomagnette.ai;
 
+import dev.langchain4j.agentic.Agent;
 import dev.langchain4j.service.UserMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
 
@@ -16,5 +17,6 @@ public interface CategoryRouter {
                        policies, contact details, and general news or updates.
             The user request is {request}.
             """)
+    @Agent("Categorize the user request")
     RequestCategory classify(String request);
 }

@@ -3,10 +3,12 @@ package be.lomagnette.ai;
 import be.lomagnette.entities.Puppy;
 import be.lomagnette.entities.PuppyRepository;
 import be.lomagnette.rest.PuppySearchForm;
+import dev.langchain4j.agentic.Agent;
 import dev.langchain4j.data.image.Image;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
+import dev.langchain4j.service.V;
 import io.quarkiverse.langchain4j.RegisterAiService;
 import io.quarkiverse.langchain4j.ToolBox;
 
@@ -49,9 +51,10 @@ public interface PuppyExpertAgent {
     @UserMessage("""
             You should try to answer the user questions about puppies and dog breeds. You can should welcome any other precision
             about the ideal puppy for the user.
-            {message}
+            {{request}}
             """)
-    String chat(String message);
+    @Agent("A puppy expert")
+    String chat(@V("request") String message);
 
     @UserMessage("""
             You should try to guide the user into finding the right puppy.

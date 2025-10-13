@@ -9,7 +9,9 @@ import be.lomagnette.entities.Puppy;
 import be.lomagnette.entities.PuppyRepository;
 import be.lomagnette.rest.ChatMessage;
 import be.lomagnette.rest.PuppySearchForm;
+import dev.langchain4j.agentic.Agent;
 import dev.langchain4j.data.image.Image;
+import dev.langchain4j.service.V;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.apache.tika.Tika;
@@ -19,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 
 @ApplicationScoped
 public class PuppyService {
@@ -79,4 +82,6 @@ public class PuppyService {
         Log.info(s);
         return s;
     }
+
+
 }
