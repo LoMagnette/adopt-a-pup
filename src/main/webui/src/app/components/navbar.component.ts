@@ -64,6 +64,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
       font-size: 2rem;
       filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
       animation: bounce 2s ease-in-out infinite;
+      color: transparent;
+      text-shadow: 0 0 0 #FFF;
     }
 
     @keyframes bounce {
