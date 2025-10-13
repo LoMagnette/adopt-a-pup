@@ -309,30 +309,38 @@ import {DomSanitizer} from "@angular/platform-browser";
     styles: `
       .adoption-form-container {
         max-width: 900px;
-        margin: 2rem auto;
-        padding: 2rem;
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin: 3rem auto;
+        padding: 3rem;
+        background: linear-gradient(135deg, #ffffff, #fafbff);
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(99, 102, 241, 0.1);
       }
 
       .form-title {
-        color: #2c3e50;
+        color: var(--text-primary);
         text-align: center;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
+        font-size: 2.5rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
       }
 
       .form-description {
-        color: #7f8c8d;
+        color: var(--text-secondary);
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
+        font-size: 1.1rem;
+        line-height: 1.6;
       }
 
       .progress-container {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 2rem;
+        margin-bottom: 3rem;
         position: relative;
+        gap: 0.5rem;
+        flex-wrap: wrap;
       }
 
       .progress-container::before {
@@ -341,25 +349,35 @@ import {DomSanitizer} from "@angular/platform-browser";
         top: 50%;
         left: 0;
         right: 0;
-        height: 2px;
-        background-color: #ddd;
+        height: 3px;
+        background: linear-gradient(90deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
         z-index: 1;
+        border-radius: 2px;
       }
 
       .progress-item {
         position: relative;
-        background-color: #ddd;
-        color: #fff;
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
+        background-color: #e5e7eb;
+        color: #6b7280;
+        padding: 0.625rem 1.125rem;
+        border-radius: 2rem;
+        font-size: 0.85rem;
+        font-weight: 600;
         z-index: 2;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 2px solid transparent;
+      }
+
+      .progress-item:hover {
+        transform: translateY(-2px);
       }
 
       .progress-item.active {
-        background-color: #3498db;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: white;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        border-color: rgba(255, 255, 255, 0.2);
       }
 
       .form-section {
@@ -367,32 +385,37 @@ import {DomSanitizer} from "@angular/platform-browser";
       }
 
       .form-section h2 {
-        color: #2c3e50;
-        margin-bottom: 1.5rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid #3498db;
+        color: var(--text-primary);
+        margin-bottom: 2rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 3px solid var(--primary-color);
+        font-size: 1.75rem;
+        font-weight: 700;
       }
 
       .form-row {
         display: flex;
-        gap: 1rem;
-        margin-bottom: 1rem;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
       }
 
       .form-group {
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
         flex: 1;
       }
 
       .form-group.indent {
-        margin-left: 2rem;
+        margin-left: 2.5rem;
+        padding-left: 1rem;
+        border-left: 3px solid rgba(99, 102, 241, 0.2);
       }
 
       label {
         display: block;
-        margin-bottom: 0.5rem;
-        color: #34495e;
-        font-weight: 500;
+        margin-bottom: 0.625rem;
+        color: var(--text-primary);
+        font-weight: 600;
+        font-size: 0.95rem;
       }
 
       input[type="text"],
@@ -403,116 +426,177 @@ import {DomSanitizer} from "@angular/platform-browser";
       select,
       textarea {
         width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #ddd;
-        border-radius: 4px;
+        padding: 0.875rem 1rem;
+        border: 2px solid rgba(99, 102, 241, 0.15);
+        border-radius: 0.75rem;
         font-size: 1rem;
+        transition: all 0.2s ease;
+        background-color: white;
+        color: var(--text-primary);
+      }
+
+      input[type="text"]:focus,
+      input[type="email"]:focus,
+      input[type="tel"]:focus,
+      input[type="number"]:focus,
+      input[type="date"]:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      }
+
+      input:hover,
+      select:hover,
+      textarea:hover {
+        border-color: rgba(99, 102, 241, 0.3);
       }
 
       .checkbox-group {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.75rem;
       }
 
       .checkbox-group input[type="checkbox"] {
         width: 20px;
         height: 20px;
+        cursor: pointer;
+        accent-color: var(--primary-color);
       }
 
       .checkbox-group label {
         margin-bottom: 0;
+        cursor: pointer;
       }
 
       .error-message {
-        color: #e74c3c;
-        font-size: 0.8rem;
-        margin-top: 0.25rem;
+        color: var(--error-color);
+        font-size: 0.85rem;
+        margin-top: 0.375rem;
+        font-weight: 500;
       }
 
       .form-navigation {
         display: flex;
         justify-content: space-between;
-        margin-top: 2rem;
+        margin-top: 3rem;
+        gap: 1rem;
       }
 
       button {
-        padding: 0.75rem 1.5rem;
+        padding: 1rem 2rem;
         border: none;
-        border-radius: 4px;
+        border-radius: 2rem;
         font-size: 1rem;
+        font-weight: 700;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
       .back-button {
-        background-color: #95a5a6;
-        color: white;
+        background-color: #e5e7eb;
+        color: var(--text-primary);
+        border: 2px solid transparent;
       }
 
       .back-button:hover {
-        background-color: #7f8c8d;
+        background-color: #d1d5db;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       }
 
       .next-button {
-        background-color: #3498db;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
         color: white;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
       }
 
-      .next-button:hover {
-        background-color: #2980b9;
+      .next-button:hover:not(:disabled) {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
       }
 
       .submit-button {
-        background-color: #2ecc71;
+        background: linear-gradient(135deg, #10b981, #059669);
         color: white;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
       }
 
-      .submit-button:hover {
-        background-color: #27ae60;
+      .submit-button:hover:not(:disabled) {
+        background: linear-gradient(135deg, #059669, #047857);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
       }
 
       button:disabled {
-        background-color: #ddd;
+        background: #d1d5db;
+        color: #9ca3af;
         cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      button:active:not(:disabled) {
+        transform: translateY(0);
       }
 
       .terms-container {
-        background-color: #ecf0f1;
-        padding: 1.5rem;
-        border-radius: 4px;
-        margin: 1.5rem 0;
+        background: linear-gradient(135deg, #eff6ff, #e0f2fe);
+        padding: 2rem;
+        border-radius: 1rem;
+        margin: 2rem 0;
+        border: 2px solid rgba(99, 102, 241, 0.2);
       }
 
       .terms-container h3 {
         margin-top: 0;
-        color: #2c3e50;
+        color: var(--primary-color);
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+
+      .terms-container p {
+        color: var(--text-secondary);
+        line-height: 1.7;
       }
 
       .terms-container ul {
-        padding-left: 1.5rem;
+        padding-left: 1.75rem;
+        color: var(--text-secondary);
+        line-height: 1.8;
+      }
+
+      .terms-container li {
+        margin-bottom: 0.5rem;
       }
 
       .form-summary {
-        margin-top: 2rem;
-        background-color: #ecf0f1;
-        padding: 1.5rem;
-        border-radius: 4px;
+        margin-top: 2.5rem;
+        background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+        padding: 2rem;
+        border-radius: 1rem;
+        border: 2px solid rgba(99, 102, 241, 0.2);
       }
 
       .summary-section {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.75rem;
       }
 
       .summary-section h4 {
-        color: #3498db;
-        margin-bottom: 0.5rem;
-        border-bottom: 1px solid #ddd;
-        padding-bottom: 0.25rem;
+        color: var(--primary-color);
+        margin-bottom: 0.75rem;
+        border-bottom: 2px solid var(--primary-light);
+        padding-bottom: 0.5rem;
+        font-weight: 700;
       }
 
       .summary-section p {
-        margin: 0.5rem 0;
+        margin: 0.625rem 0;
+        color: var(--text-secondary);
+        line-height: 1.6;
       }
     `
 })

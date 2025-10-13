@@ -143,7 +143,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 
       .message {
         max-width: 70%;
-        padding: 0.75rem 1rem;
+        padding: 0.10rem 1rem;
         border-radius: 18px;
         position: relative;
       }
@@ -223,7 +223,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 
       .message-input {
         flex: 1;
-        padding: 0.75rem 1rem;
+        padding: 0.10rem 1rem;
         border: 2px solid #e5e7eb;
         border-radius: 25px;
         outline: none;

@@ -177,34 +177,38 @@ import {PuppyFilters} from "../models/puppy-filters";
     }
 
     h1 {
-      font-size: 2.5rem;
+      font-size: 3rem;
       text-align: center;
-      margin-bottom: 0.5rem;
-      color: #333;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+      font-weight: 800;
+      letter-spacing: -0.02em;
     }
 
     .subtitle {
       text-align: center;
-      font-size: 1.2rem;
-      color: #666;
-      margin-bottom: 2rem;
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      margin-bottom: 3rem;
+      font-weight: 400;
     }
 
     .content-wrapper {
       display: flex;
-      gap: 2rem;
+      gap: 2.5rem;
     }
 
     .filter-sidebar {
-      flex: 0 0 300px;
-      background-color: white;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      padding: 1.5rem;
+      flex: 0 0 320px;
+      background: linear-gradient(135deg, #ffffff, #fafbff);
+      border-radius: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      padding: 2rem;
       height: fit-content;
       position: sticky;
       top: 20px;
       align-self: flex-start;
+      border: 1px solid rgba(99, 102, 241, 0.1);
     }
 
     .main-content {
@@ -215,73 +219,92 @@ import {PuppyFilters} from "../models/puppy-filters";
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid rgba(99, 102, 241, 0.1);
     }
 
     .filter-header h2 {
       font-size: 1.5rem;
-      color: #333;
+      color: var(--text-primary);
       margin: 0;
+      font-weight: 700;
     }
 
     .reset-button {
       background-color: transparent;
-      border: 1px solid #ff6b6b;
-      color: #ff6b6b;
+      border: 2px solid var(--secondary-color);
+      color: var(--secondary-color);
       padding: 0.5rem 1rem;
-      border-radius: 20px;
+      border-radius: 2rem;
       cursor: pointer;
-      font-weight: 500;
-      transition: all 0.3s ease;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
     }
 
     .reset-button:hover {
-      background-color: #ff6b6b;
+      background-color: var(--secondary-color);
       color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
     }
 
     .search-bar {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.75rem;
     }
 
     .search-bar input {
       width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #ddd;
-      border-radius: 30px;
-      font-size: 1rem;
-      transition: border-color 0.3s ease;
+      padding: 0.875rem 1.125rem;
+      border: 2px solid rgba(99, 102, 241, 0.15);
+      border-radius: 2rem;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      background-color: white;
     }
 
     .search-bar input:focus {
       outline: none;
-      border-color: #ff6b6b;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .search-bar input::placeholder {
+      color: #9ca3af;
     }
 
     .filter-group {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.75rem;
     }
 
     .filter-group h3 {
-      font-size: 1.1rem;
-      margin-bottom: 0.5rem;
-      color: #444;
+      font-size: 1rem;
+      margin-bottom: 0.625rem;
+      color: var(--text-primary);
+      font-weight: 600;
     }
 
     .filter-group select {
       width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      color: #444;
+      padding: 0.875rem 1rem;
+      border: 2px solid rgba(99, 102, 241, 0.15);
+      border-radius: 0.75rem;
+      font-size: 0.95rem;
+      color: var(--text-primary);
       background-color: white;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
     .filter-group select:focus {
       outline: none;
-      border-color: #ff6b6b;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .filter-group select:hover {
+      border-color: rgba(99, 102, 241, 0.3);
     }
 
     .age-inputs {
@@ -330,87 +353,107 @@ import {PuppyFilters} from "../models/puppy-filters";
 
     .puppy-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2.5rem;
     }
 
     .puppy-card {
       position: relative;
-      border-radius: 15px;
+      border-radius: 1.5rem;
       overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       background-color: white;
+      border: 1px solid var(--border-color);
     }
 
     .puppy-card:hover {
-      transform: translateY(-10px);
+      transform: translateY(-12px);
+      box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
     }
 
     .puppy-card.not-available {
-      opacity: 0.8;
+      opacity: 0.75;
+      filter: grayscale(0.3);
     }
 
     .adopted-banner {
       position: absolute;
       top: 20px;
-      right: -30px;
-      background-color: #ff6b6b;
+      right: -35px;
+      background: linear-gradient(135deg, #ef4444, #dc2626);
       color: white;
-      padding: 0.5rem 2rem;
+      padding: 0.5rem 2.5rem;
       transform: rotate(45deg);
       z-index: 10;
-      font-weight: bold;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      font-weight: 700;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+      letter-spacing: 0.05em;
     }
 
     .puppy-image {
       height: 300px;
       background-size: cover;
       background-position: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .puppy-image::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
     }
 
     .puppy-info {
-      padding: 1.5rem;
+      padding: 1.75rem;
     }
 
     .puppy-info h3 {
-      margin-bottom: 0.8rem;
-      color: #333;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      font-weight: 700;
     }
 
     .puppy-badges {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin-bottom: 1rem;
+      margin-bottom: 1.25rem;
     }
 
     .puppy-badge {
-      padding: 0.3rem 0.8rem;
-      border-radius: 15px;
+      padding: 0.4rem 0.875rem;
+      border-radius: 2rem;
       font-size: 0.8rem;
-      font-weight: 500;
+      font-weight: 600;
+      letter-spacing: 0.02em;
     }
 
     .puppy-badge.breed {
-      background-color: #e3f2fd;
-      color: #1976d2;
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+      color: #1e40af;
     }
 
     .puppy-badge.age {
-      background-color: #e8f5e9;
-      color: #2e7d32;
+      background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+      color: #065f46;
     }
 
     .puppy-badge.size {
-      background-color: #fff3e0;
-      color: #e65100;
+      background: linear-gradient(135deg, #fed7aa, #fdba74);
+      color: #92400e;
     }
 
     .puppy-badge.gender {
-      background-color: #f3e5f5;
-      color: #7b1fa2;
+      background: linear-gradient(135deg, #fae8ff, #f5d0fe);
+      color: #701a75;
     }
 
     .activity-level, .good-with {
@@ -426,22 +469,25 @@ import {PuppyFilters} from "../models/puppy-filters";
     }
 
     .btn {
-      padding: 0.75rem 1.5rem;
-      border-radius: 30px;
-      font-weight: bold;
+      padding: 0.875rem 1.75rem;
+      border-radius: 2rem;
+      font-weight: 700;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       display: inline-block;
+      font-size: 0.95rem;
     }
 
     .btn.primary {
-      background-color: #ff6b6b;
+      background: linear-gradient(135deg, #ec4899, #f43f5e);
       color: white;
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
     }
 
     .btn.primary:hover {
-      background-color: #ff5252;
+      background: linear-gradient(135deg, #db2777, #e11d48);
       transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(236, 72, 153, 0.4);
     }
 
     .no-puppies {

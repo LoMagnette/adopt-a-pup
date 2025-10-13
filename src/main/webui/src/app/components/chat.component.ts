@@ -130,7 +130,6 @@ import {AnimationState, DogAnimationComponent} from "./dog-animation.component";
         z-index: 1000;
       }
 
-
       .chat-container {
         display: flex;
         flex-direction: column;
@@ -138,10 +137,11 @@ import {AnimationState, DogAnimationComponent} from "./dog-animation.component";
         height: 650px;
         border-radius: 24px;
         overflow: visible;
-        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-        background-color: white;
-        transition: all 0.3s ease;
+        box-shadow: 0 10px 40px rgba(99, 102, 241, 0.2);
+        background: linear-gradient(to bottom, #ffffff, #fafbff);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
+        border: 1px solid rgba(99, 102, 241, 0.1);
       }
 
       .chat-container::before {
@@ -153,19 +153,19 @@ import {AnimationState, DogAnimationComponent} from "./dog-animation.component";
         height: 0;
         border-left: 15px solid transparent;
         border-right: 15px solid transparent;
-        border-top: 15px solid white;
+        border-top: 15px solid #fafbff;
       }
 
       .chat-container::after {
         content: '';
         position: absolute;
-        bottom: -18px;
-        right: 133px;
+        bottom: -19px;
+        right: 132px;
         width: 0;
         height: 0;
-        border-left: 17px solid transparent;
-        border-right: 17px solid transparent;
-        border-top: 18px solid rgba(0, 0, 0, 0.1);
+        border-left: 18px solid transparent;
+        border-right: 18px solid transparent;
+        border-top: 19px solid rgba(99, 102, 241, 0.15);
         z-index: -1;
       }
 
@@ -261,12 +261,30 @@ import {AnimationState, DogAnimationComponent} from "./dog-animation.component";
 
       .chat-messages {
         flex: 1;
-        padding: 20px;
+        padding: 24px;
         overflow-y: auto;
-        background-color: #f5f8fb;
+        background: linear-gradient(180deg, #f8f9ff 0%, #ffffff 100%);
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 16px;
+        border-radius: 15px;
+      }
+
+      .chat-messages::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .chat-messages::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .chat-messages::-webkit-scrollbar-thumb {
+        background: rgba(99, 102, 241, 0.2);
+        border-radius: 3px;
+      }
+
+      .chat-messages::-webkit-scrollbar-thumb:hover {
+        background: rgba(99, 102, 241, 0.3);
       }
 
       .empty-chat {
@@ -274,17 +292,30 @@ import {AnimationState, DogAnimationComponent} from "./dog-animation.component";
         align-items: center;
         justify-content: center;
         height: 100%;
-        color: #999;
+        color: #9ca3af;
         font-style: italic;
+        font-size: 0.95rem;
       }
 
       .message {
         max-width: 80%;
-        padding: 14px 18px;
-        border-radius: 18px;
+        min-width: 120px;
+        padding: 6px 10px;
+        border-radius: 12px;
         position: relative;
-        line-height: 1.5;
-        margin-bottom: 6px;
+        line-height: 1.4;
+        animation: messageSlideIn 0.3s ease-out;
+      }
+
+      @keyframes messageSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       .message-content {
@@ -293,112 +324,183 @@ import {AnimationState, DogAnimationComponent} from "./dog-animation.component";
 
       .message-content p {
         margin: 0;
-        padding-bottom: 20px; /* Space for timestamp */
+        padding-bottom: 2px;
+        word-wrap: break-word;
       }
 
       .message-time {
         position: absolute;
-        bottom: 0;
-        right: 0;
-        font-size: 12px;
-        color: rgba(0, 0, 0, 0.5);
-        padding: 2px 5px;
+        bottom: 2px;
+        right: 4px;
+        font-size: 10px;
+        color: rgba(0, 0, 0, 0.4);
+        padding: 0;
+        font-weight: 500;
       }
 
       .user-message {
         align-self: flex-end;
-        background-color: #e3effd;
-        border-bottom-right-radius: 5px;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: #ffffff !important;
+        border-bottom-right-radius: 6px;
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+      }
+
+      .user-message .message-time {
+        color: rgba(255, 255, 255, 0.9) !important;
+      }
+
+      .user-message .message-content {
+        color: #ffffff !important;
+      }
+
+      .user-message .message-content p {
+        color: #ffffff !important;
+      }
+
+      .user-message markdown {
+        color: #ffffff !important;
+      }
+
+      .user-message markdown * {
+        color: #ffffff !important;
+      }
+
+      .user-message ::ng-deep markdown,
+      .user-message ::ng-deep markdown *,
+      .user-message ::ng-deep p,
+      .user-message ::ng-deep span,
+      .user-message ::ng-deep div {
+        color: #ffffff !important;
       }
 
       .bot-message {
         align-self: flex-start;
         background-color: #ffffff;
-        border-bottom-left-radius: 5px;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        border-bottom-left-radius: 6px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(99, 102, 241, 0.1);
+        color: var(--text-primary);
+      }
+
+      .bot-message .message-content p {
+        color: var(--text-primary);
       }
 
       .chat-input {
         display: flex;
-        padding: 18px;
-        background-color: white;
-        border-top: 1px solid #e9e9e9;
+        padding: 20px;
+        background: linear-gradient(to top, #ffffff, #fafbff);
+        border-top: 1px solid rgba(99, 102, 241, 0.1);
+        border-radius: 15px;
       }
 
       .input-container {
         display: flex;
         align-items: center;
         flex: 1;
-        border: 1px solid #ddd;
-        border-radius: 24px;
-        padding: 0 15px;
-        background-color: #f9f9f9;
+        border: 2px solid rgba(99, 102, 241, 0.15);
+        border-radius: 28px;
+        padding: 0 18px;
+        background-color: #ffffff;
+        transition: all 0.2s ease;
+      }
+
+      .input-container:focus-within {
+        border-color: rgba(99, 102, 241, 0.4);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
       }
 
       .input-container input {
         flex: 1;
-        padding: 12px 0;
+        padding: 14px 8px;
         border: none;
         outline: none;
         font-size: 15px;
         background-color: transparent;
+        color: var(--text-primary);
+      }
+
+      .input-container input::placeholder {
+        color: #9ca3af;
       }
 
       .attachment-button {
         background: transparent;
         border: none;
-        color: #666;
+        color: #6366f1;
         cursor: pointer;
         padding: 8px;
         border-radius: 50%;
-        transition: background-color 0.2s ease;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .attachment-button:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-        color: #4a6fa5;
+        background-color: rgba(99, 102, 241, 0.1);
+        color: #4f46e5;
+        transform: scale(1.1);
       }
 
       .send-button {
-        background-color: #4a6fa5;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
         color: white;
         border: none;
         border-radius: 50%;
-        width: 46px;
-        height: 46px;
+        width: 48px;
+        height: 48px;
         margin-left: 12px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: background-color 0.2s ease;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
       }
 
-      .send-button:hover {
-        background-color: #3d5d8a;
+      .send-button:hover:not(:disabled) {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+      }
+
+      .send-button:active:not(:disabled) {
+        transform: translateY(0);
       }
 
       .send-button:disabled {
-        background-color: #ccc;
+        background: #d1d5db;
         cursor: not-allowed;
+        box-shadow: none;
       }
 
       .selected-files {
-        padding: 10px 18px;
-        background-color: #f0f5ff;
-        border-top: 1px solid #e0e8f5;
+        padding: 12px 20px;
+        background: linear-gradient(to bottom, #f0f5ff, #fafbff);
+        border-top: 1px solid rgba(99, 102, 241, 0.1);
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 10px;
       }
 
       .selected-file {
         display: flex;
         align-items: center;
-        background-color: #e3effd;
-        padding: 5px 10px;
-        border-radius: 12px;
+        background: linear-gradient(135deg, #e0e7ff, #ddd6fe);
+        padding: 6px 12px;
+        border-radius: 16px;
         font-size: 13px;
+        font-weight: 500;
+        color: var(--primary-color);
+        box-shadow: 0 2px 4px rgba(99, 102, 241, 0.1);
+        transition: all 0.2s ease;
+      }
+
+      .selected-file:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(99, 102, 241, 0.15);
       }
 
       .file-name {
@@ -411,18 +513,20 @@ import {AnimationState, DogAnimationComponent} from "./dog-animation.component";
       .remove-file {
         background: transparent;
         border: none;
-        color: #666;
+        color: #6366f1;
         cursor: pointer;
-        padding: 3px;
-        margin-left: 5px;
+        padding: 4px;
+        margin-left: 6px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: all 0.2s ease;
       }
 
       .remove-file:hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: rgba(99, 102, 241, 0.2);
+        transform: scale(1.1);
       }
 
       .attachment-list {
@@ -493,7 +597,7 @@ import {AnimationState, DogAnimationComponent} from "./dog-animation.component";
 
       .message {
         max-width: 70%;
-        padding: 0.75rem 1rem;
+        padding: 0.10rem 1rem;
         border-radius: 18px;
         position: relative;
       }
