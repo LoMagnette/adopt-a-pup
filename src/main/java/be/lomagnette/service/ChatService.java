@@ -19,7 +19,6 @@ public class ChatService {
     private final PgVectorEmbeddingStore store;
     private final EmbeddingModel model;
     private final UserService userService;
-    private final Bot bot;
     private final CategoryRouter router;
     private final PuppyParadiseAgent paradiseExpert;
     private final AdoptionAgent adoptionAgent;
@@ -29,7 +28,6 @@ public class ChatService {
     public ChatService(PgVectorEmbeddingStore store,
                        EmbeddingModel model,
                        UserService userService,
-                       Bot bot,
                        CategoryRouter router,
                        PuppyParadiseAgent paradiseExpert,
                        AdoptionAgent adoptionAgent,
@@ -38,7 +36,6 @@ public class ChatService {
         this.store = store;
         this.model = model;
         this.userService = userService;
-        this.bot = bot;
         this.router = router;
         this.paradiseExpert = paradiseExpert;
         this.adoptionAgent = adoptionAgent;
