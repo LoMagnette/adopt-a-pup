@@ -27,15 +27,15 @@ public class AdoptionService {
 
     public ChatMessage<AdoptionRequest> chat(ChatMessage<AdoptionRequest> form) {
         chatService.storeQuestions(form.text());
-        var updatedForm = this.expert.fillAdoptionForm(userService.getUser().id().toString(),form.text(), form.data());
-        updatedForm.setPuppy(form.data().getPuppy());
+        var updatedForm = this.expert.fillAdoptionForm(userService.getUser().id().toString(),form.text(), new AdoptionForm(form.data()));
         var validations = validator.validate(updatedForm);
         if (validations.isEmpty()) {
-            return new ChatMessage<>(expert.success(), updatedForm, RequestCategory.ADOPTION, expert.generateSummary(updatedForm));
+            var request = new AdoptionRequest(form.data().puppy,updatedForm);
+            return new ChatMessage<>(expert.success(), request, RequestCategory.ADOPTION, expert.generateSummary(request));
         }else{
             var humanReadableErrors = this.expert.getHumanReadableErrors(validations);
             var answer = this.expert.helpUser(userService.getUser().id().toString(), humanReadableErrors, form.text());
-            return new ChatMessage<>(answer,updatedForm, RequestCategory.ADOPTION);
+            return new ChatMessage<>(answer,new AdoptionRequest(form.data().puppy,updatedForm), RequestCategory.ADOPTION);
         }
 
     }

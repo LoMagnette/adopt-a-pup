@@ -1,6 +1,7 @@
 package be.lomagnette.ai;
 
 import be.lomagnette.entities.AdoptionRequest;
+import be.lomagnette.service.AdoptionForm;
 import be.lomagnette.service.UserService;
 import dev.langchain4j.agentic.Agent;
 import dev.langchain4j.service.MemoryId;
@@ -40,7 +41,7 @@ public interface AdoptionAgent {
             form: {form}
             """)
     @ToolBox(UserService.class)
-    AdoptionRequest fillAdoptionForm(@MemoryId String id, String message, AdoptionRequest form);
+    AdoptionForm fillAdoptionForm(@MemoryId String id, String message, AdoptionForm form);
 
     @UserMessage("""
             You should try to answer the user questions about puppies adoption.
@@ -62,7 +63,7 @@ public interface AdoptionAgent {
             validation errors: {validations}
             """
     )
-    List<String> getHumanReadableErrors(Set<ConstraintViolation<AdoptionRequest>> validations);
+    List<String> getHumanReadableErrors(Set<ConstraintViolation<AdoptionForm>> validations);
 
     @UserMessage("""
             You are to assist the user with fixing validation issues in their puppy adoption request.

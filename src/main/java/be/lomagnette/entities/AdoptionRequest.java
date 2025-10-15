@@ -1,5 +1,6 @@
 package be.lomagnette.entities;
 
+import be.lomagnette.service.AdoptionForm;
 import dev.langchain4j.model.output.structured.Description;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
@@ -127,6 +128,33 @@ public class AdoptionRequest extends PanacheEntity {
 
     public void setPuppy(Puppy puppy) {
         this.puppy = puppy;
+    }
+
+    public AdoptionRequest() {
+    }
+
+    public AdoptionRequest(Puppy puppy, AdoptionForm form){
+        super();
+        this.puppy=puppy;
+        firstName = form.firstName();
+        lastName = form.lastName();
+        email = form.email();
+        phone = form.phone();
+        address = form.address();
+        housingType = form.housingType();
+        hasYard = form.hasYard();
+        yardFenced = form.yardFenced();
+        ownOrRent = form.ownOrRent();
+        landlordApproval = form.landlordApproval();
+        landlordContact = form.landlordContact();
+        householdMembers = form.householdMembers();
+        childrenAges = form.childrenAges();
+        hoursAlonePerDay = form.hoursAlonePerDay();
+        activityLevel = form.activityLevel();
+        previousPets = form.previousPets();
+        currentPets = form.currentPets();
+        permitNumber = form.permitNumber();
+        permitExpiryDate = form.permitExpiryDate();
     }
 
     @Override
