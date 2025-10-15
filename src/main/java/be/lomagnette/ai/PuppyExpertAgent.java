@@ -53,7 +53,7 @@ public interface PuppyExpertAgent {
             about the ideal puppy for the user.
             {{request}}
             """)
-    @Agent("A puppy expert")
+    @Agent(description = "A puppy expert", outputName = "response")
     String chat(@V("request") String message);
 
     @UserMessage("""

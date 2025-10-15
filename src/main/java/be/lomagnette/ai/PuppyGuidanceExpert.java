@@ -4,9 +4,13 @@ import be.lomagnette.entities.Puppy;
 import dev.langchain4j.agentic.Agent;
 import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.V;
+import io.quarkiverse.langchain4j.RegisterAiService;
 
 import java.util.List;
 
+@RegisterAiService(
+        modelName = "gpt4"
+)
 public interface PuppyGuidanceExpert {
 
     @UserMessage("""
@@ -16,6 +20,6 @@ public interface PuppyGuidanceExpert {
             user message: {request}
             found puppies: {puppies}
             """)
-    @Agent("Expert to help people find the right puppy")
+    @Agent(description = "Expert to help people find the right puppy", outputName = "guidance")
     String guidePuppySelection(@V("request") String message, @V("puppies") List<Puppy> puppies);
 }

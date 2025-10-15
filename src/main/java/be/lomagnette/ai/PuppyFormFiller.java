@@ -6,8 +6,12 @@ import dev.langchain4j.agentic.Agent;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.V;
+import io.quarkiverse.langchain4j.RegisterAiService;
 import io.quarkiverse.langchain4j.ToolBox;
 
+@RegisterAiService(
+        modelName = "gpt4"
+)
 public interface PuppyFormFiller {
 
     @UserMessage("""
@@ -22,6 +26,6 @@ public interface PuppyFormFiller {
             extra info: {info}
             """)
     @ToolBox(PuppyRepository.class)
-    @Agent("Expert at filling form for puppy search")
+    @Agent(description = "Expert at filling form for puppy search", outputName = "form")
     PuppySearchForm fillForm(@MemoryId String id, @V("request") String message, @V("form") PuppySearchForm form,@V("info") String extraInfo);
 }

@@ -4,8 +4,6 @@ import be.lomagnette.ai.*;
 import be.lomagnette.entities.PuppyRepository;
 import dev.langchain4j.agentic.AgenticServices;
 import dev.langchain4j.agentic.UntypedAgent;
-import dev.langchain4j.model.chat.ChatModel;
-import io.quarkiverse.langchain4j.ModelName;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 
@@ -15,39 +13,21 @@ import java.util.Map;
 public class AgenticResource {
 
 
-    private final ChatModel localModel;
-    private final ChatModel gptModel;
     private final PuppyRepository repo;
 
-    public AgenticResource(@ModelName("local") ChatModel localModel,
-                           @ModelName("gpt4") ChatModel gptModel,
+
+    public AgenticResource(
                            PuppyRepository repo) {
-        this.localModel = localModel;
-        this.gptModel = gptModel;
         this.repo = repo;
     }
 
     @POST
-    public String chat(String question){
-        CategoryRouter router = AgenticServices.agentBuilder(CategoryRouter.class)
-                .chatModel(localModel)
-                .outputName("category")
-                .build();
+    public CategorizationResponse chat(String question){
+        CategoryRouter router = AgenticServices.agentBuilder(CategoryRouter.class).build();
 
-        PuppyExpertAgent puppyExpert  = AgenticServices.agentBuilder(PuppyExpertAgent.class)
-                .chatModel(localModel)
-                .outputName("response")
-                .build();
-
-        PuppyParadiseAgent companyExpert  = AgenticServices.agentBuilder(PuppyParadiseAgent.class)
-                .chatModel(localModel)
-                .outputName("response")
-                .build();
-
-        AdoptionAgent adoptionExpert  = AgenticServices.agentBuilder(AdoptionAgent.class)
-                .chatModel(localModel)
-                .outputName("response")
-                .build();
+        PuppyExpertAgent puppyExpert  = AgenticServices.agentBuilder(PuppyExpertAgent.class).build();
+        PuppyParadiseAgent companyExpert  = AgenticServices.agentBuilder(PuppyParadiseAgent.class).build();
+        AdoptionAgent adoptionExpert  = AgenticServices.agentBuilder(AdoptionAgent.class).build();
 
         UntypedAgent expertsAgent = AgenticServices.conditionalBuilder()
                 .subAgents( agenticScope -> agenticScope.readState("category", RequestCategory.UNKNOWN) == RequestCategory.PUPPY, puppyExpert)
@@ -58,25 +38,24 @@ public class AgenticResource {
         ExpertRouterAgent expertRouterAgent = AgenticServices
                 .sequenceBuilder(ExpertRouterAgent.class)
                 .subAgents(router, expertsAgent)
-                .outputName("response")
+                .outputName("categoryAndResponse")
+                .output(scope -> {
+                    var category = scope.readState("category", RequestCategory.UNKNOWN);
+                    var response = scope.readState("response","");
+                    return new CategorizationResponse(category,response);
+                })
                 .build();
 
-        return expertRouterAgent.ask(question);
+        var answer = expertRouterAgent.ask(question);
+        return answer.result();
     }
 
 
     @POST
     @Path("/puppy")
     public String findPuppy(String question){
-        PuppyFormFiller fillerExpert  = AgenticServices.agentBuilder(PuppyFormFiller.class)
-                .chatModel(gptModel)
-                .outputName("form")
-                .build();
-
-        PuppyGuidanceExpert guidanceExpert  = AgenticServices.agentBuilder(PuppyGuidanceExpert.class)
-                .chatModel(gptModel)
-                .outputName("guidance")
-                .build();
+        PuppyFormFiller fillerExpert  = AgenticServices.agentBuilder(PuppyFormFiller.class).build();
+        PuppyGuidanceExpert guidanceExpert  = AgenticServices.agentBuilder(PuppyGuidanceExpert.class).build();
 
         UntypedAgent puppyGuider = AgenticServices
                 .sequenceBuilder()
@@ -90,10 +69,7 @@ public class AgenticResource {
                 "form", new PuppySearchForm(null, null, null, null, null, null, null, true, null)
         );
 
-
-
-      var result = (String) puppyGuider.invoke(input);
-      return result;
+        return (String) puppyGuider.invoke(input);
     }
 
 }

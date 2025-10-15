@@ -17,6 +17,7 @@ public interface CategoryRouter {
                        policies, contact details, and general news or updates.
             The user request is {request}.
             """)
-    @Agent("Categorize the user request")
+    @Agent(description = "Categorize the user request",
+            outputName = "category")
     RequestCategory classify(String request);
 }
