@@ -87,7 +87,7 @@ export class ChatService {
     private getUrl() {
         const currentRoute = this.router.url;
         if (!currentRoute) {
-            return '/api/bot';
+            return '/api/agentic';
         } else if (currentRoute.includes('adopt')) {
             return '/api/adoption/chat';
         } else if (currentRoute.includes('puppies')) {

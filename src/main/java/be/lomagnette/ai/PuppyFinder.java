@@ -10,7 +10,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import java.util.Arrays;
 import java.util.List;
 
-
+@ApplicationScoped
 public class PuppyFinder {
 
     private final PuppyRepository puppyRepository;

@@ -55,7 +55,7 @@ public class AgenticResource {
     @Path("/puppy")
     public String findPuppy(String question){
         PuppyFormFiller fillerExpert  = AgenticServices.agentBuilder(PuppyFormFiller.class).build();
-        PuppyGuidanceExpert guidanceExpert  = AgenticServices.agentBuilder(PuppyGuidanceExpert.class).build();
+        var guidanceExpert  = AgenticServices.agentBuilder(PuppyGuidanceExpert.class).build();
 
         UntypedAgent puppyGuider = AgenticServices
                 .sequenceBuilder()
