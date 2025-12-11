@@ -1,4 +1,4 @@
-import {Component, signal, computed, effect, input, linkedSignal, output, model} from '@angular/core';
+import {Component, signal, effect, input, linkedSignal, model, ChangeDetectionStrategy} from '@angular/core';
 
 
 export type AnimationState = 'running' | 'happy' | 'thinking' | 'rolling' | 'standing';
@@ -7,6 +7,7 @@ export type AnimationState = 'running' | 'happy' | 'thinking' | 'rolling' | 'sta
   selector: 'app-dog-animation',
   standalone: true,
   imports: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="animation-container">
       <!-- Dog House - shown initially, hidden after running phase -->
@@ -16,7 +17,7 @@ export type AnimationState = 'running' | 'happy' | 'thinking' | 'rolling' | 'sta
         </div>
       }
 
-      <!-- Animated Dog -->
+      <!-- Animated Dog with all frames preloaded -->
       <div
           class="dog"
           [style.right.px]="rightPosition()"
@@ -25,9 +26,21 @@ export type AnimationState = 'running' | 'happy' | 'thinking' | 'rolling' | 'sta
           [class.thinking]="animationState() === 'thinking'"
           [class.rolling]="animationState() === 'rolling'"
           [class.standing]="animationState() === 'standing'"
+          [class.frame-1]="currentFrame() % 2 === 0"
+          [class.frame-2]="currentFrame() % 2 === 1"
           (click)="dogClicked()"
       >
-        <img [src]="currentImage()" [alt]="animationState() + ' dog'" />
+        <!-- Preload all images as hidden elements -->
+        <img class="dog-frame running-1" src="pixel-art/qaly.running-1.png" alt="running 1" />
+        <img class="dog-frame running-2" src="pixel-art/qaly.running-2.png" alt="running 2" />
+        <img class="dog-frame happy-1" src="pixel-art/qaly.happy.png" alt="happy 1" />
+        <img class="dog-frame happy-2" src="pixel-art/qaly.happy-2.png" alt="happy 2" />
+        <img class="dog-frame rolling-1" src="pixel-art/qaly.rolling-1.png" alt="rolling 1" />
+        <img class="dog-frame rolling-2" src="pixel-art/qaly.rolling-2.png" alt="rolling 2" />
+        <img class="dog-frame standing-1" src="pixel-art/qaly.standing-1.png" alt="standing 1" />
+        <img class="dog-frame standing-2" src="pixel-art/qaly.standing-2.png" alt="standing 2" />
+        <img class="dog-frame thinking-1" src="pixel-art/qaly.thinking.png" alt="thinking 1" />
+        <img class="dog-frame thinking-2" src="pixel-art/qaly.thinking-2.png" alt="thinking 2" />
       </div>
     </div>
   `,
@@ -61,37 +74,41 @@ export type AnimationState = 'running' | 'happy' | 'thinking' | 'rolling' | 'sta
       bottom: 0px;
       transition: right 0.2s linear;
       z-index: 2;
+      width: 150px;
+      height: 150px;
     }
 
-    .dog img {
+    .dog-frame {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 150px;
       height: auto;
       image-rendering: pixelated;
       image-rendering: -moz-crisp-edges;
       image-rendering: crisp-edges;
+      display: none;
     }
 
-    .dog.running {
-      /* Running animation specific styles */
+    /* Show frame 1 variants */
+    .dog.running.frame-1 .running-1,
+    .dog.happy.frame-1 .happy-1,
+    .dog.thinking.frame-1 .thinking-1,
+    .dog.rolling.frame-1 .rolling-1,
+    .dog.standing.frame-1 .standing-1 {
+      display: block;
     }
 
-    .dog.happy {
-      /* Happy state - no movement */
-      transition: none;
+    /* Show frame 2 variants */
+    .dog.running.frame-2 .running-2,
+    .dog.happy.frame-2 .happy-2,
+    .dog.thinking.frame-2 .thinking-2,
+    .dog.rolling.frame-2 .rolling-2,
+    .dog.standing.frame-2 .standing-2 {
+      display: block;
     }
 
-    .dog.thinking {
-      /* Thinking state - no animation */
-      transition: none;
-    }
-
-    .dog.rolling {
-      /* Rolling state - no movement */
-      transition: none;
-    }
-
-    .dog.standing {
-      /* Standing state - no movement */
+    .dog.happy, .dog.thinking, .dog.rolling, .dog.standing {
       transition: none;
     }
   `
@@ -105,36 +122,6 @@ export class DogAnimationComponent {
   rightPosition = signal(0);
 
   talking = model<boolean>(false);
-
-  // Computed signal for current image path
-  currentImage = computed(() => {
-    const state = this.animationState();
-    const frame = this.currentFrame();
-
-    if (state === 'running') {
-      return frame % 2 === 0
-        ? 'pixel-art/qaly.running-1.png'
-        : 'pixel-art/qaly.running-2.png';
-    } else if (state === 'happy') {
-      return frame % 2 === 0
-        ? 'pixel-art/qaly.happy.png'
-        : 'pixel-art/qaly.happy-2.png';
-    } else if (state === 'rolling') {
-      return frame % 2 === 0
-        ? 'pixel-art/qaly.rolling-1.png'
-        : 'pixel-art/qaly.rolling-2.png';
-    } else if (state === 'standing') {
-      return frame % 2 === 0
-        ? 'pixel-art/qaly.standing-1.png'
-        : 'pixel-art/qaly.standing-2.png';
-    } else if (state === 'thinking') {
-      return frame % 2 === 0
-        ? 'pixel-art/qaly.thinking.png'
-        : 'pixel-art/qaly.thinking-2.png';
-    } else {
-      return 'pixel-art/qaly.thinking.png';
-    }
-  });
 
   constructor() {
     this.talking.set(false);

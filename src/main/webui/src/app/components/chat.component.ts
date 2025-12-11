@@ -1,4 +1,4 @@
-import {Component, effect, ElementRef, inject, signal, viewChild} from '@angular/core';
+import {Component, effect, ElementRef, inject, signal, viewChild, ChangeDetectionStrategy} from '@angular/core';
 
 import {FormsModule} from '@angular/forms';
 import {ChatService} from "../services/chat.service";
@@ -12,6 +12,7 @@ import {AnimationState, DogAnimationComponent} from "./dog-animation.component";
     selector: 'app-chat',
     standalone: true,
     imports: [FormsModule, MarkdownComponent, DogAnimationComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
         <div class="chat-container" [class.minimized]="isMinimized()">
             @if (!isMinimized()) {
