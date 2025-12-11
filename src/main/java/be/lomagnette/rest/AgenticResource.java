@@ -25,7 +25,7 @@ public class AgenticResource {
     public CategorizationResponse chat(String question){
         CategoryRouter router = AgenticServices.agentBuilder(CategoryRouter.class).build();
 
-        PuppyExpertAgent puppyExpert  = AgenticServices.agentBuilder(PuppyExpertAgent.class).build();
+        PuppyExpertAiService puppyExpert  = AgenticServices.agentBuilder(PuppyExpertAiService.class).build();
         PuppyParadiseAgent companyExpert  = AgenticServices.agentBuilder(PuppyParadiseAgent.class).build();
         AdoptionAgent adoptionExpert  = AgenticServices.agentBuilder(AdoptionAgent.class).build();
 

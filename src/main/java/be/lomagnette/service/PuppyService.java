@@ -2,16 +2,14 @@ package be.lomagnette.service;
 
 
 import be.lomagnette.ai.DogIdentification;
-import be.lomagnette.ai.PuppyExpertAgent;
+import be.lomagnette.ai.PuppyExpertAiService;
 import be.lomagnette.ai.RequestCategory;
 import be.lomagnette.ai.SpeechToTextAgent;
 import be.lomagnette.entities.Puppy;
 import be.lomagnette.entities.PuppyRepository;
 import be.lomagnette.rest.ChatMessage;
 import be.lomagnette.rest.PuppySearchForm;
-import dev.langchain4j.agentic.Agent;
 import dev.langchain4j.data.image.Image;
-import dev.langchain4j.service.V;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.apache.tika.Tika;
@@ -21,12 +19,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.List;
 
 @ApplicationScoped
 public class PuppyService {
 
-    private final PuppyExpertAgent expert;
+    private final PuppyExpertAiService expert;
     private final UserService userService;
     private final ChatService chatService;
     private final PuppyRepository puppyRepository;
@@ -34,7 +31,7 @@ public class PuppyService {
     private final SpeechToTextAgent speechToTextAgent;
     private final Tika tika = new Tika();
 
-    public PuppyService(PuppyExpertAgent expert,
+    public PuppyService(PuppyExpertAiService expert,
                         UserService userService,
                         ChatService chatService,
                         PuppyRepository puppyRepository,

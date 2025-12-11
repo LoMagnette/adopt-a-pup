@@ -22,7 +22,7 @@ public class ChatService {
     private final CategoryRouter router;
     private final PuppyParadiseAgent paradiseExpert;
     private final AdoptionAgent adoptionAgent;
-    private final PuppyExpertAgent puppyExpertAgent;
+    private final PuppyExpertAiService puppyExpertAiService;
 
     @Inject
     public ChatService(PgVectorEmbeddingStore store,
@@ -31,7 +31,7 @@ public class ChatService {
                        CategoryRouter router,
                        PuppyParadiseAgent paradiseExpert,
                        AdoptionAgent adoptionAgent,
-                       PuppyExpertAgent puppyExpertAgent) {
+                       PuppyExpertAiService puppyExpertAiService) {
 
         this.store = store;
         this.model = model;
@@ -39,14 +39,14 @@ public class ChatService {
         this.router = router;
         this.paradiseExpert = paradiseExpert;
         this.adoptionAgent = adoptionAgent;
-        this.puppyExpertAgent = puppyExpertAgent;
+        this.puppyExpertAiService = puppyExpertAiService;
     }
 
     public ChatMessage<Void> chat(ChatMessage<Void> question) {
         storeQuestions(question.text());
         var category = router.classify(question.text());
         var answer =  switch (category){
-            case PUPPY -> puppyExpertAgent.chat(question.text());
+            case PUPPY -> puppyExpertAiService.chat(question.text());
             case ADOPTION -> adoptionAgent.chat(question.text());
             case COMPANY, UNKNOWN -> paradiseExpert.chat(question.text());
         };
