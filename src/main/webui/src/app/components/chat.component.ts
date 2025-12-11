@@ -1,4 +1,4 @@
-import {Component, effect, ElementRef, inject, signal, ViewChild} from '@angular/core';
+import {Component, effect, ElementRef, inject, signal, viewChild} from '@angular/core';
 
 import {FormsModule} from '@angular/forms';
 import {ChatService} from "../services/chat.service";
@@ -656,8 +656,8 @@ export class ChatComponent {
     audio = this.audioRecorder.audio;
     dogState = signal<AnimationState>('running');
 
-    @ViewChild('chatMessages') chatMessagesEl!: ElementRef;
-    @ViewChild('fileInput') fileInput!: ElementRef;
+    readonly chatMessagesEl = viewChild.required<ElementRef>('chatMessages');
+    readonly fileInput = viewChild.required<ElementRef>('fileInput');
 
 
     constructor() {
@@ -745,8 +745,9 @@ export class ChatComponent {
 
     // Scroll to the bottom of the chat
     scrollToBottom(): void {
-        if (this.chatMessagesEl && this.chatMessagesEl.nativeElement) {
-            this.chatMessagesEl.nativeElement.scrollTop = this.chatMessagesEl.nativeElement.scrollHeight;
+        const chatMessagesEl = this.chatMessagesEl();
+        if (chatMessagesEl && chatMessagesEl.nativeElement) {
+            chatMessagesEl.nativeElement.scrollTop = chatMessagesEl.nativeElement.scrollHeight;
         }
     }
 

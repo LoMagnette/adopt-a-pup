@@ -1,5 +1,5 @@
 // app/pages/chat/chat.component.ts
-import {Component, inject, signal, ViewChild, ElementRef, AfterViewChecked} from '@angular/core';
+import {Component, inject, signal, ElementRef, AfterViewChecked, viewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ChatService} from "../services/chat.service";
 import {DomSanitizer} from "@angular/platform-browser";
@@ -268,7 +268,7 @@ import {DomSanitizer} from "@angular/platform-browser";
     `]
 })
 export class MaxiChatComponent implements AfterViewChecked {
-    @ViewChild('messagesContainer') messagesContainer!: ElementRef;
+    readonly messagesContainer = viewChild.required<ElementRef>('messagesContainer');
 
     chatService = inject(ChatService);
     domSanitizer = inject(DomSanitizer)
@@ -303,8 +303,9 @@ export class MaxiChatComponent implements AfterViewChecked {
     }
 
     private scrollToBottom() {
-        if (this.messagesContainer) {
-            const element = this.messagesContainer.nativeElement;
+        const messagesContainer = this.messagesContainer();
+        if (messagesContainer) {
+            const element = messagesContainer.nativeElement;
             element.scrollTop = element.scrollHeight;
         }
     }
