@@ -1,5 +1,5 @@
 import {Component, effect, ElementRef, inject, signal, ViewChild} from '@angular/core';
-import {CommonModule} from '@angular/common';
+
 import {FormsModule} from '@angular/forms';
 import {ChatService} from "../services/chat.service";
 import {Router} from "@angular/router";
@@ -11,7 +11,7 @@ import {AnimationState, DogAnimationComponent} from "./dog-animation.component";
 @Component({
     selector: 'app-chat',
     standalone: true,
-    imports: [CommonModule, FormsModule, MarkdownComponent, DogAnimationComponent],
+    imports: [FormsModule, MarkdownComponent, DogAnimationComponent],
     template: `
         <div class="chat-container" [class.minimized]="isMinimized()">
             @if (!isMinimized()) {

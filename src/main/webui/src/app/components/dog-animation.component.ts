@@ -1,12 +1,12 @@
 import {Component, signal, computed, effect, input, linkedSignal, output, model} from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 export type AnimationState = 'running' | 'happy' | 'thinking' | 'rolling' | 'standing';
 
 @Component({
   selector: 'app-dog-animation',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div class="animation-container">
       <!-- Dog House - shown initially, hidden after running phase -->

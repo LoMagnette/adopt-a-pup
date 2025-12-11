@@ -1,5 +1,5 @@
 import {Component, computed, effect, inject, input, signal} from '@angular/core';
-import {CommonModule} from '@angular/common';
+
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {PuppyService} from '../services/puppy.service';
 import {Puppy} from '../models/puppy';
@@ -7,7 +7,7 @@ import {Puppy} from '../models/puppy';
 @Component({
     selector: 'app-puppy-detail',
     standalone: true,
-    imports: [CommonModule, RouterLink],
+    imports: [RouterLink],
     template: `
         @if (puppy(); as puppy) {
             <section class="puppy-detail-container">

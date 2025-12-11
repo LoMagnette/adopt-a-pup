@@ -14,7 +14,7 @@ export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'puppies', component: PuppiesListComponent },
   { path: 'puppies/:id', component: PuppyDetailComponent },
-  { path: 'adopt/:id', component: MaxiChatComponent },
+  { path: 'adopt/:id', component: AdoptionFormComponent },
   { path: 'success', component: SuccessComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },

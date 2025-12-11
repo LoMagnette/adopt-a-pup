@@ -1,5 +1,5 @@
 import {Component, inject, signal, effect, linkedSignal} from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterLink } from '@angular/router';
 import { PuppyService } from '../services/puppy.service';
 import { FormsModule } from '@angular/forms';
@@ -10,7 +10,7 @@ import {PuppyFilters} from "../models/puppy-filters";
 @Component({
   selector: 'app-puppies-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule],
   template: `
     <section class="puppies-container">
       <h1>Find Your Perfect Puppy</h1>
