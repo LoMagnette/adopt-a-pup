@@ -36,11 +36,7 @@ public class Utils {
     }
 
     public String getImageInfo(File file) throws IOException {
-        var imageData = Files.readAllBytes(file.toPath());
-        String base64Img = Base64.getEncoder().encodeToString(imageData);
-        var image = Image.builder().base64Data(base64Img).build();
         var s = this.dogIdentification.describeDog(file);
-        Log.info(s);
         return s;
     }
 }

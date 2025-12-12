@@ -1,8 +1,6 @@
 package be.lomagnette.ai.adoption;
 
 import be.lomagnette.ai.UserMessagesRetrievalAugmentor;
-import be.lomagnette.entities.PuppyRepository;
-import be.lomagnette.rest.PuppySearchForm;
 import be.lomagnette.service.AdoptionForm;
 import be.lomagnette.service.UserService;
 import dev.langchain4j.agentic.Agent;

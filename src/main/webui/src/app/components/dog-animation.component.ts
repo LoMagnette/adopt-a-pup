@@ -55,8 +55,8 @@ export type AnimationState = 'running' | 'happy' | 'thinking' | 'rolling' | 'sta
 
     .dog-house {
       position: absolute;
-      right: 0px;
-      bottom: 0px;
+      right: 0;
+      bottom: 0;
       z-index: 1;
     }
 
@@ -70,8 +70,8 @@ export type AnimationState = 'running' | 'happy' | 'thinking' | 'rolling' | 'sta
 
     .dog {
       position: absolute;
-      right: 0px;
-      bottom: 0px;
+      right: 0;
+      bottom: 0;
       transition: right 0.2s linear;
       z-index: 2;
       width: 150px;
@@ -129,7 +129,7 @@ export class DogAnimationComponent {
     effect(
         () => {
           const position = this.animationState();
-          console.log(position);
+          //console.log(position);
           if(position === 'thinking') {
             this.switchToThinking();
           }else if(position === 'happy') {

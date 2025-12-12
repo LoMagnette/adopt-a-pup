@@ -245,7 +245,6 @@ import {Puppy} from '../models/puppy';
 })
 export class PuppyDetailComponent {
     private puppyService = inject(PuppyService);
-    private route = inject(ActivatedRoute);
     private router = inject(Router);
 
     id = input.required<string>();

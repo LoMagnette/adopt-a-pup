@@ -13,7 +13,6 @@ import java.util.Set;
 
 @ApplicationScoped
 public class AgenticAdoptionService {
-    private final AdoptionAiService expert;
     private final UserService userService;
     private final Validator validator;
     private final ChatService chatService;
@@ -25,11 +24,9 @@ public class AgenticAdoptionService {
     private final AdoptionFormAssistant assistant = AgenticServices.agentBuilder(AdoptionFormAssistant.class).build();
     private final AdoptionCongratulation congratulation = AgenticServices.agentBuilder(AdoptionCongratulation.class).build();
 
-    public AgenticAdoptionService(AdoptionAiService expert,
-                                  UserService userService,
+    public AgenticAdoptionService(UserService userService,
                                   Validator validator,
                                   ChatService chatService) {
-        this.expert = expert;
         this.userService = userService;
         this.validator = validator;
         this.chatService = chatService;
