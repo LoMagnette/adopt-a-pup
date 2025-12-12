@@ -1,6 +1,6 @@
-import {Component, computed, effect, inject, input, signal} from '@angular/core';
+import {Component, effect, inject, input, signal} from '@angular/core';
 
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {PuppyService} from '../services/puppy.service';
 import {Puppy} from '../models/puppy';
 
@@ -254,7 +254,7 @@ export class PuppyDetailComponent {
     constructor() {
         effect(() => {
             const idNbr = Number(this.id());
-            const foundPuppy = this.puppyService.getPuppyById(idNbr).subscribe(
+            this.puppyService.getPuppyById(idNbr).subscribe(
                 value => {
                     this.puppy.set(value);
                 }

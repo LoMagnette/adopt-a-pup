@@ -1,16 +1,13 @@
 package be.lomagnette.service;
 
-import be.lomagnette.ai.puppy.DogIdentification;
 import be.lomagnette.ai.SpeechToTextAgent;
-import dev.langchain4j.data.image.Image;
+import be.lomagnette.ai.puppy.DogIdentification;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.apache.tika.Tika;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Base64;
 
 @ApplicationScoped
 public class Utils {
