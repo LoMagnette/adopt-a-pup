@@ -1,6 +1,9 @@
 package be.lomagnette.service;
 
 import be.lomagnette.ai.*;
+import be.lomagnette.ai.adoption.AdoptionAiService;
+import be.lomagnette.ai.puppy.PuppyExpertAiService;
+import be.lomagnette.ai.puppy.PuppyParadiseAgent;
 import be.lomagnette.rest.ChatMessage;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.Metadata;
@@ -21,7 +24,7 @@ public class ChatService {
     private final UserService userService;
     private final CategoryRouter router;
     private final PuppyParadiseAgent paradiseExpert;
-    private final AdoptionAgent adoptionAgent;
+    private final AdoptionAiService adoptionAiService;
     private final PuppyExpertAiService puppyExpertAiService;
 
     @Inject
@@ -30,7 +33,7 @@ public class ChatService {
                        UserService userService,
                        CategoryRouter router,
                        PuppyParadiseAgent paradiseExpert,
-                       AdoptionAgent adoptionAgent,
+                       AdoptionAiService adoptionAiService,
                        PuppyExpertAiService puppyExpertAiService) {
 
         this.store = store;
@@ -38,7 +41,7 @@ public class ChatService {
         this.userService = userService;
         this.router = router;
         this.paradiseExpert = paradiseExpert;
-        this.adoptionAgent = adoptionAgent;
+        this.adoptionAiService = adoptionAiService;
         this.puppyExpertAiService = puppyExpertAiService;
     }
 
@@ -47,7 +50,7 @@ public class ChatService {
         var category = router.classify(question.text());
         var answer =  switch (category){
             case PUPPY -> puppyExpertAiService.chat(question.text());
-            case ADOPTION -> adoptionAgent.chat(question.text());
+            case ADOPTION -> adoptionAiService.chat(question.text());
             case COMPANY, UNKNOWN -> paradiseExpert.chat(question.text());
         };
         return new ChatMessage<>(answer, null, category);

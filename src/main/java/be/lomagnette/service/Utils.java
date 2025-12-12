@@ -1,6 +1,6 @@
 package be.lomagnette.service;
 
-import be.lomagnette.ai.DogIdentification;
+import be.lomagnette.ai.puppy.DogIdentification;
 import be.lomagnette.ai.SpeechToTextAgent;
 import dev.langchain4j.data.image.Image;
 import io.quarkus.logging.Log;

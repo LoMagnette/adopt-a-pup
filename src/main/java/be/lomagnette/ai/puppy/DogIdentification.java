@@ -1,4 +1,4 @@
-package be.lomagnette.ai;
+package be.lomagnette.ai.puppy;
 
 import dev.langchain4j.data.message.ImageContent;
 import dev.langchain4j.data.message.UserMessage;

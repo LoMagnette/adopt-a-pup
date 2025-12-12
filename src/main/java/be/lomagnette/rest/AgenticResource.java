@@ -1,6 +1,8 @@
 package be.lomagnette.rest;
 
 import be.lomagnette.ai.*;
+import be.lomagnette.ai.adoption.AdoptionAiService;
+import be.lomagnette.ai.puppy.*;
 import be.lomagnette.entities.PuppyRepository;
 import dev.langchain4j.agentic.AgenticServices;
 import dev.langchain4j.agentic.UntypedAgent;
@@ -27,7 +29,7 @@ public class AgenticResource {
 
         PuppyExpertAiService puppyExpert  = AgenticServices.agentBuilder(PuppyExpertAiService.class).build();
         PuppyParadiseAgent companyExpert  = AgenticServices.agentBuilder(PuppyParadiseAgent.class).build();
-        AdoptionAgent adoptionExpert  = AgenticServices.agentBuilder(AdoptionAgent.class).build();
+        AdoptionAiService adoptionExpert  = AgenticServices.agentBuilder(AdoptionAiService.class).build();
 
         UntypedAgent expertsAgent = AgenticServices.conditionalBuilder()
                 .subAgents( agenticScope -> agenticScope.readState("category", RequestCategory.UNKNOWN) == RequestCategory.PUPPY, puppyExpert)

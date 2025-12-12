@@ -1,5 +1,6 @@
-package be.lomagnette.ai;
+package be.lomagnette.ai.adoption;
 
+import be.lomagnette.ai.UserMessagesRetrievalAugmentor;
 import be.lomagnette.entities.AdoptionRequest;
 import be.lomagnette.service.AdoptionForm;
 import be.lomagnette.service.UserService;
@@ -20,7 +21,7 @@ import java.util.Set;
         retrievalAugmentor = UserMessagesRetrievalAugmentor.class
 )
 @SystemMessage("You are an AI named Pawtrick you help user filling the adoption form")
-public interface AdoptionAgent {
+public interface AdoptionAiService {
 
     @UserMessage("""
             Fill the the provided object based on the information given by the user and the one you can collect about him.

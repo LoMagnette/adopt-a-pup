@@ -1,7 +1,7 @@
 package be.lomagnette.service;
 
 
-import be.lomagnette.ai.PuppyExpertAiService;
+import be.lomagnette.ai.puppy.PuppyExpertAiService;
 import be.lomagnette.ai.RequestCategory;
 import be.lomagnette.entities.Puppy;
 import be.lomagnette.entities.PuppyRepository;

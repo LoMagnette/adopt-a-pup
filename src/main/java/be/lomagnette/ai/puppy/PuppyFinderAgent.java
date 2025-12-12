@@ -1,14 +1,12 @@
-package be.lomagnette.ai;
+package be.lomagnette.ai.puppy;
 
 
 import be.lomagnette.entities.Puppy;
 import be.lomagnette.rest.PuppySearchForm;
-import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agentic.Agent;
 import dev.langchain4j.agentic.declarative.SequenceAgent;
 import dev.langchain4j.agentic.declarative.SubAgent;
 import dev.langchain4j.service.V;
-import io.quarkiverse.langchain4j.RegisterAiService;
 
 import java.util.List;
 

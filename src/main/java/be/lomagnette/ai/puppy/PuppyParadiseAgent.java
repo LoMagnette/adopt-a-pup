@@ -1,5 +1,6 @@
-package be.lomagnette.ai;
+package be.lomagnette.ai.puppy;
 
+import be.lomagnette.ai.DocumentRetrievalAugmentor;
 import dev.langchain4j.agentic.Agent;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;

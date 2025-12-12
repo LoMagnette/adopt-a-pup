@@ -1,6 +1,7 @@
 package be.lomagnette.service;
 
 import be.lomagnette.ai.*;
+import be.lomagnette.ai.puppy.*;
 import be.lomagnette.entities.PuppyRepository;
 import be.lomagnette.rest.ChatMessage;
 import be.lomagnette.rest.PuppySearchForm;

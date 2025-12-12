@@ -1,5 +1,6 @@
-package be.lomagnette.ai;
+package be.lomagnette.ai.puppy;
 
+import be.lomagnette.ai.UserMessagesRetrievalAugmentor;
 import be.lomagnette.entities.Puppy;
 import be.lomagnette.entities.PuppyRepository;
 import be.lomagnette.rest.PuppySearchForm;

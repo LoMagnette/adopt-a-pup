@@ -89,7 +89,7 @@ export class ChatService {
         if (!currentRoute) {
             return '/api/agentic';
         } else if (currentRoute.includes('adopt')) {
-            return '/api/adoption/chat';
+            return '/api/agentic/adoption/chat';
         } else if (currentRoute.includes('puppies')) {
             return '/api/agentic/puppies/chat';
         } else {

@@ -1,4 +1,4 @@
-package be.lomagnette.ai;
+package be.lomagnette.ai.puppy;
 
 import be.lomagnette.entities.Puppy;
 import dev.langchain4j.agentic.Agent;

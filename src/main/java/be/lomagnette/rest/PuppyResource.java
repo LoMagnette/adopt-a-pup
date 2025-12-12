@@ -1,6 +1,6 @@
 package be.lomagnette.rest;
 
-import be.lomagnette.ai.DogIdentification;
+import be.lomagnette.ai.puppy.DogIdentification;
 import be.lomagnette.entities.Puppy;
 import be.lomagnette.entities.PuppyRepository;
 import be.lomagnette.service.PuppyService;
