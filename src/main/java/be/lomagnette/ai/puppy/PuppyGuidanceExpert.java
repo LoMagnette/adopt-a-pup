@@ -20,6 +20,6 @@ public interface PuppyGuidanceExpert {
             user message: {request}
             found puppies: {puppies}
             """)
-    @Agent(description = "Expert to help people find the right puppy", outputName = "guidance")
+    @Agent(description = "Expert to help people find the right puppy", outputKey = "guidance")
     String guidePuppySelection(@V("request") String message, @V("puppies") List<Puppy> puppies);
 }

@@ -14,6 +14,6 @@ public interface AdoptionCongratulation {
                 You should thanks the user for all the informations and invite him to review those before submiting their request
             """
     )
-    @Agent(description = "Agent that will congratulate the user for the adoption", outputName = "guidance")
+    @Agent(description = "Agent that will congratulate the user for the adoption", outputKey = "guidance")
     String success();
 }

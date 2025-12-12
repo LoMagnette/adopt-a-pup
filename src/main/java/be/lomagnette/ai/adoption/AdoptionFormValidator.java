@@ -16,7 +16,7 @@ public class AdoptionFormValidator {
         this.validator = validator;
     }
 
-    @Agent(description = "Validate the form", outputName = "errors")
+    @Agent(description = "Validate the form", outputKey = "errors")
     public Set<ConstraintViolation<AdoptionForm>> isValid(@V("updatedForm") AdoptionForm form) {
         return validator.validate(form);
     }

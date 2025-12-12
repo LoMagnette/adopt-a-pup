@@ -28,6 +28,6 @@ public interface AdoptionFormAssistant {
             user message: {request}
             
             """)
-    @Agent(description = "Adoption assistant", outputName = "guidance")
+    @Agent(description = "Adoption assistant", outputKey = "guidance")
     String helpUser(@MemoryId String string, @V("humanReadableErrors") List<String> issues, @V("request") String userMessage);
 }

@@ -49,7 +49,7 @@ public interface AdoptionAiService {
             You can should welcome any about the person that want to adopt a pup.
             {{request}}
             """)
-    @Agent("An expert on puppy adoption")
+    @Agent(value = "An expert on puppy adoption", outputKey = "response")
     String chat(@V("request") String message);
 
 
