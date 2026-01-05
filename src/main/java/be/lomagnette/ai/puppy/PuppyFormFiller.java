@@ -3,6 +3,8 @@ package be.lomagnette.ai.puppy;
 import be.lomagnette.entities.PuppyRepository;
 import be.lomagnette.rest.PuppySearchForm;
 import dev.langchain4j.agentic.Agent;
+import dev.langchain4j.agentic.declarative.ChatMemorySupplier;
+import dev.langchain4j.agentic.declarative.ChatModelSupplier;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.V;
@@ -25,6 +27,8 @@ public interface PuppyFormFiller {
             current form: {form}
             extra info: {info}
             """)
+    @ChatModelSupplier()
     @ToolBox(PuppyRepository.class)
-    PuppySearchForm fillForm(@MemoryId String id, @V("request") String message, @V("form") PuppySearchForm form,@V("info") String extraInfo);
+    @Agent(description = "Expert at filling form for puppy search", outputName = "form")
+    PuppySearchForm fillForm();
 }
