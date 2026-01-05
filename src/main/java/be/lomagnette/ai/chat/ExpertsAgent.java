@@ -8,14 +8,19 @@ import be.lomagnette.ai.puppy.PuppyParadiseAgent;
 import dev.langchain4j.agentic.declarative.ActivationCondition;
 import dev.langchain4j.agentic.declarative.ConditionalAgent;
 import dev.langchain4j.agentic.declarative.Output;
+import dev.langchain4j.agentic.declarative.SubAgent;
 import dev.langchain4j.agentic.scope.AgenticScopeAccess;
 import dev.langchain4j.agentic.scope.ResultWithAgenticScope;
 import dev.langchain4j.service.V;
 
 public interface ExpertsAgent extends AgenticScopeAccess {
 
-    @ConditionalAgent(outputKey = "categoryAndResponse",
-            subAgents = {PuppyExpertAiService.class, PuppyParadiseAgent.class, AdoptionAiService.class})
+    @ConditionalAgent(outputName = "categoryAndResponse",
+            subAgents = {
+                @SubAgent(type=PuppyExpertAiService.class),
+                @SubAgent(type=PuppyParadiseAgent.class),
+                @SubAgent(type=AdoptionAiService.class)
+    })
     ResultWithAgenticScope<CategorizationResponse> askExpert(@V("request") String request);
 
     @ActivationCondition(PuppyExpertAiService.class)

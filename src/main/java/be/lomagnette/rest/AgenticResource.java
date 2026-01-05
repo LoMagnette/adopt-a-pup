@@ -40,7 +40,6 @@ public class AgenticResource {
         ExpertRouterAgent expertRouterAgent = AgenticServices
                 .sequenceBuilder(ExpertRouterAgent.class)
                 .subAgents(router, expertsAgent)
-                .outputKey("categoryAndResponse")
                 .output(scope -> {
                     var category = scope.readState("category", RequestCategory.UNKNOWN);
                     var response = scope.readState("response","");
@@ -62,7 +61,7 @@ public class AgenticResource {
         UntypedAgent puppyGuider = AgenticServices
                 .sequenceBuilder()
                 .subAgents(fillerExpert, new PuppyFinder(repo), guidanceExpert)
-                .outputKey("guidance")
+                .outputName("guidance")
                 .build();
 
         Map<String, Object> input = Map.of(

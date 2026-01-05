@@ -1,6 +1,7 @@
 package be.lomagnette.service;
 
 import be.lomagnette.ai.*;
+import be.lomagnette.ai.adoption.PuppySequenceAgent;
 import be.lomagnette.ai.puppy.*;
 import be.lomagnette.entities.PuppyRepository;
 import be.lomagnette.rest.ChatMessage;
@@ -42,7 +43,8 @@ public class AgenticPuppyService {
                 })
                 .build();
 
-        var output = puppyGuider.ask(form.text(),form.data(),extraInfo);
+        var agenticSystem = AgenticServices.createAgenticSystem(PuppySequenceAgent.class);
+        var output = agenticSystem.ask(form.text(),form.data(),extraInfo);
 
         return new ChatMessage<>(output.result().answer(), output.result().form(), RequestCategory.PUPPY);
     }

@@ -1,10 +1,6 @@
 package be.lomagnette.service;
 
-import be.lomagnette.ai.*;
-import be.lomagnette.ai.adoption.AdoptionAiService;
 import be.lomagnette.ai.chat.ExpertsAgent;
-import be.lomagnette.ai.puppy.PuppyExpertAiService;
-import be.lomagnette.ai.puppy.PuppyParadiseAgent;
 import be.lomagnette.rest.ChatMessage;
 import dev.langchain4j.agentic.AgenticServices;
 import jakarta.enterprise.context.ApplicationScoped;
