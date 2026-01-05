@@ -24,6 +24,6 @@ public interface HumanReadableAgent {
             validation errors: {errors}
             """
     )
-    @Agent(description = "Convert the list of validation errors into a List of human readable list of validation error", outputKey = "humanReadableErrors")
+    @Agent(description = "Convert the list of validation errors into a List of human readable list of validation error", outputName = "humanReadableErrors")
     List<String> getHumanReadableErrors(@V("errors") Set<ConstraintViolation<AdoptionForm>> validations);
 }

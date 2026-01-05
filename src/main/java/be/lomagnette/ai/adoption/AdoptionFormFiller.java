@@ -30,6 +30,6 @@ public interface AdoptionFormFiller {
             current form: {form}
             """)
     @ToolBox(UserService.class)
-    @Agent(description = "Expert at filling form for puppy adoption", outputKey = "updatedForm")
+    @Agent(description = "Expert at filling form for puppy adoption", outputName = "updatedForm")
     AdoptionForm fillForm(@MemoryId String id, @V("request") String message, @V("form") AdoptionForm form);
 }

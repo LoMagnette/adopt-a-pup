@@ -22,6 +22,6 @@ public interface PuppyParadiseAgent {
             You should try to answer the user questions about puppy paradise.
             {{request}}
             """)
-    @Agent(description = "A expert about the Puppy paradise site and services", outputKey = "response")
+    @Agent(description = "A expert about the Puppy paradise site and services", outputName = "response")
     public String chat(@V("request") String message);
 }

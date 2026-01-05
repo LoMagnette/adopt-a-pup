@@ -19,7 +19,7 @@ public class PuppyFinder {
         this.puppyRepository = puppyRepository;
     }
 
-    @Agent(value = "Agent able to find the puppies", outputKey = "puppies")
+    @Agent(value = "Agent able to find the puppies", outputName = "puppies")
     public List<Puppy> findPuppies(@V("form") PuppySearchForm criteria){
         var goodWithValues = puppyRepository.listAllGoodWithValues().stream().map(String::toLowerCase).toList();
         var goodWithFound = criteria.goodWith() == null ? new String[0] : criteria.goodWith();

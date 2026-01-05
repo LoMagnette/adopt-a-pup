@@ -32,6 +32,6 @@ public interface AdoptionSummzarizer {
             request: {updatedForm}
             puppy information: {puppy}
             """)
-    @Agent(description = "Summarize the user adoption form", outputKey = "summary")
+    @Agent(description = "Summarize the user adoption form", outputName = "summary")
     String generateSummary(@V("updatedForm") AdoptionForm form,@V("puppy") Puppy puppy);
 }

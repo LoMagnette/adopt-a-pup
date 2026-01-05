@@ -18,6 +18,6 @@ public interface CategoryRouter {
             The user request is {request}.
             """)
     @Agent(description = "Categorize the user request",
-            outputKey = "category")
+            outputName = "category")
     RequestCategory classify(String request);
 }

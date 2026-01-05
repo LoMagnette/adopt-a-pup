@@ -26,6 +26,5 @@ public interface PuppyFormFiller {
             extra info: {info}
             """)
     @ToolBox(PuppyRepository.class)
-    @Agent(description = "Expert at filling form for puppy search", outputKey = "form")
     PuppySearchForm fillForm(@MemoryId String id, @V("request") String message, @V("form") PuppySearchForm form,@V("info") String extraInfo);
 }
