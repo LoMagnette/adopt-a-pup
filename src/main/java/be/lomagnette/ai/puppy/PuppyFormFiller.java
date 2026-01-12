@@ -30,5 +30,5 @@ public interface PuppyFormFiller {
     @ChatModelSupplier()
     @ToolBox(PuppyRepository.class)
     @Agent(description = "Expert at filling form for puppy search", outputName = "form")
-    PuppySearchForm fillForm();
+    PuppySearchForm fillForm(@V("request") String message, @V("form") PuppySearchForm form, @V("info") String extraInfo);
 }
