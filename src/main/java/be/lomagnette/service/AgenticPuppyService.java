@@ -7,7 +7,9 @@ import be.lomagnette.entities.PuppyRepository;
 import be.lomagnette.rest.ChatMessage;
 import be.lomagnette.rest.PuppySearchForm;
 import dev.langchain4j.agentic.AgenticServices;
+import dev.langchain4j.agentic.scope.AgenticScope;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.jspecify.annotations.NonNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,16 +38,18 @@ public class AgenticPuppyService {
         PuppyExpertAgent puppyGuider = AgenticServices
                 .sequenceBuilder(PuppyExpertAgent.class)
                 .subAgents(fillerExpert, new PuppyFinder(repo), guidanceExpert)
-                .output(scope -> {
-                    var formUpdated = scope.readState("form", form.data());
-                    var guidance = scope.readState("guidance","");
-                    return new PuppySearchResult(formUpdated,guidance);
-                })
+                .output(scope -> getPuppySearchResult(form, scope))
                 .build();
 
         var output = puppyGuider.ask(form.text(),form.data(),extraInfo);
 
         return new ChatMessage<>(output.result().answer(), output.result().form(), RequestCategory.PUPPY);
+    }
+
+    private static @NonNull PuppySearchResult getPuppySearchResult(ChatMessage<PuppySearchForm> form, AgenticScope scope) {
+        var formUpdated = scope.readState("form", form.data());
+        var guidance = scope.readState("guidance","");
+        return new PuppySearchResult(formUpdated, guidance);
     }
 
 }
