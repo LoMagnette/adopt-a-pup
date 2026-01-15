@@ -103,12 +103,16 @@ export class ChatService {
         if (!currentRoute) {
             return {text}
         } else if (currentRoute.includes('adopt')) {
+            const formData = new FormData();
             const data = {
                 ...this.adoptionService.getFormData()(),
                 puppy: this.adoptionService.selectedPuppy()
             };
-            console.log('data', data);
-            return {text, data }
+            formData.append('form', JSON.stringify({text, data }));
+            if(files.length > 0) {
+                formData.append('file', files[0]);
+            }
+            return formData;
         } else if (currentRoute.includes('puppies')) {
             const formData = new FormData();
             formData.append('form', JSON.stringify({text, data:this.puppyService.filter()}));

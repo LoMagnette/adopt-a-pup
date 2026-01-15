@@ -14,7 +14,7 @@ import io.quarkiverse.langchain4j.RegisterAiService;
         retrievalAugmentor = UserMessagesRetrievalAugmentor.class
 )
 @SystemMessage("You are an AI named Pawtrick you help user filling the adoption form")
-public interface AdoptionSummzarizer {
+public interface AdoptionSummarizer {
 
     @UserMessage("""
             You are given a user request containing information to be displayed on a website. Your task is to generate a clean, well-structured, and visually appealing HTML fragment (not a full HTML document).
