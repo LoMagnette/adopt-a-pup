@@ -1,16 +1,14 @@
 package be.lomagnette.service;
 
-import be.lomagnette.ai.*;
+import be.lomagnette.ai.DocumentContentExtractorAgent;
+import be.lomagnette.ai.RequestCategory;
 import be.lomagnette.ai.adoption.*;
 import be.lomagnette.entities.AdoptionRequest;
 import be.lomagnette.rest.ChatMessage;
 import dev.langchain4j.agentic.AgenticServices;
 import dev.langchain4j.agentic.scope.AgenticScope;
 import dev.langchain4j.data.image.Image;
-import dev.langchain4j.model.chat.ChatModel;
-import io.quarkiverse.langchain4j.ModelName;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import org.jspecify.annotations.NonNull;

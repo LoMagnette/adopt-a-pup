@@ -1,7 +1,6 @@
 package be.lomagnette.service;
 
-import be.lomagnette.ai.*;
-import be.lomagnette.ai.adoption.PuppySequenceAgent;
+import be.lomagnette.ai.RequestCategory;
 import be.lomagnette.ai.puppy.*;
 import be.lomagnette.entities.PuppyRepository;
 import be.lomagnette.rest.ChatMessage;
