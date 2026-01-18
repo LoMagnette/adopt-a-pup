@@ -78,6 +78,9 @@ INSERT INTO "dog-quality" (puppy_id, "dog-quality")
 VALUES (1, 'children'),
        (1, 'dogs'),
        (1, 'strangers'),
+       (1, 'cats'),
+       (1, 'crowds'),
+       (1, 'small pets'),
 
        (2, 'children'),
        (2, 'dogs'),

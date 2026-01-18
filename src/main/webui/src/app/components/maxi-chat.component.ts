@@ -1,8 +1,10 @@
 // app/pages/chat/chat.component.ts
-import {Component, inject, signal, ElementRef, AfterViewChecked, viewChild} from '@angular/core';
+import {AfterViewChecked, Component, effect, ElementRef, inject, input, signal, viewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ChatService} from "../services/chat.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {PuppyService} from "../services/puppy.service";
+import {AdoptionService} from "../services/adoption.service";
 
 @Component({
     selector: 'app-maxi-chat',
@@ -271,9 +273,23 @@ export class MaxiChatComponent implements AfterViewChecked {
     readonly messagesContainer = viewChild.required<ElementRef>('messagesContainer');
 
     chatService = inject(ChatService);
+    adoptionService = inject(AdoptionService);
+    puppyService = inject(PuppyService);
     domSanitizer = inject(DomSanitizer)
     messageInput = '';
     isTyping = signal(false);
+
+    id = input.required<number>();
+
+    constructor() {
+        effect(() =>{
+            const id = this.id();
+            if(!id) return;
+            this.puppyService.getPuppyById(this.id()).subscribe(puppy => {
+                this.adoptionService.selectedPuppy.set(puppy);
+            })
+        })
+    }
 
     ngAfterViewChecked() {
         this.scrollToBottom();
