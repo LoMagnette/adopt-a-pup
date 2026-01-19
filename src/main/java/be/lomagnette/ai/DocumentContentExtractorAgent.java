@@ -12,6 +12,6 @@ public interface DocumentContentExtractorAgent {
             Extract the content of this document.
             You should collect all the data that might concern dog adoption,
             dog adoption permit.
-            """)
+           """)
     String extractReceiptData(Image image);
 }
