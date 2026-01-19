@@ -24,17 +24,17 @@ public interface ExpertsAgent extends AgenticScopeAccess {
     ResultWithAgenticScope<CategorizationResponse> askExpert(@V("request") String request);
 
     @ActivationCondition(PuppyExpertAiService.class)
-    static boolean activateMedical(@V("category") RequestCategory category) {
+    static boolean activatePuppy(@V("category") RequestCategory category) {
         return category == RequestCategory.PUPPY;
     }
 
     @ActivationCondition(PuppyParadiseAgent.class)
-    static boolean activateTechnical(@V("category") RequestCategory category) {
+    static boolean activateCompany(@V("category") RequestCategory category) {
         return category == RequestCategory.COMPANY;
     }
 
     @ActivationCondition(AdoptionAiService.class)
-    static boolean activateLegal(@V("category") RequestCategory category) {
+    static boolean activateAdoption(@V("category") RequestCategory category) {
         return category == RequestCategory.ADOPTION;
     }
 
