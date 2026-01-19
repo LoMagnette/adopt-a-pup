@@ -47,7 +47,7 @@ public class AgenticAdoptionService {
     public ChatMessage<AdoptionRequest> chat(ChatMessage<AdoptionRequest> form, File file) throws IOException {
         chatService.storeQuestions(form.text());
         var extraInfo = "";
-        if(file != null){
+        if (file != null) {
             byte[] bytes = Files.readAllBytes(file.toPath());
             String b64 = Base64.getEncoder().encodeToString(bytes);
             Image img = Image.builder()
@@ -59,7 +59,7 @@ public class AgenticAdoptionService {
         }
 
         var userHelper = AgenticServices.sequenceBuilder().subAgents(humanReadableAgent, assistant).build();
-        var successParallelAgent =  AgenticServices.parallelBuilder().subAgents(congratulation, summzarizer).build();
+        var successParallelAgent = AgenticServices.parallelBuilder().subAgents(congratulation, summzarizer).build();
 
         var validationConditionalAgent = AgenticServices
                 .conditionalBuilder()
@@ -73,7 +73,11 @@ public class AgenticAdoptionService {
                 .output(scope -> getAdoptionProcessResult(form, scope))
                 .build();
 
-        var result = agent.helpAdoption(userService.getUser().id().toString(), form.text(), new AdoptionForm(form.data()), form.data().puppy);
+        var result = agent.helpAdoption(userService.getUser().id().toString(),
+                form.text(),
+                new AdoptionForm(form.data()),
+                form.data().puppy,
+                extraInfo);
         return new ChatMessage<>(result.message(), result.form(), RequestCategory.ADOPTION, result.summary());
     }
 

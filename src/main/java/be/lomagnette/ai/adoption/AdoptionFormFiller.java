@@ -28,8 +28,9 @@ public interface AdoptionFormFiller {
             ------
             user message: {request}
             current form: {form}
+            extra info: {info}
             """)
     @ToolBox(UserService.class)
     @Agent(description = "Expert at filling form for puppy adoption", outputName = "updatedForm")
-    AdoptionForm fillForm(@MemoryId String id, @V("request") String message, @V("form") AdoptionForm form);
+    AdoptionForm fillForm(@MemoryId String id, @V("request") String message, @V("form") AdoptionForm form, @V("info") String extraInfo);
 }

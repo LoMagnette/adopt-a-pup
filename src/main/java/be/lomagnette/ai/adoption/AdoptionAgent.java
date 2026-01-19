@@ -7,5 +7,5 @@ import dev.langchain4j.service.V;
 
 public interface AdoptionAgent extends AgenticScopeAccess {
 
-    AdoptionProcessResult helpAdoption(@V("id") String id, @V("request") String message, @V("form") AdoptionForm form, @V("puppy") Puppy puppy);
+    AdoptionProcessResult helpAdoption(@V("id") String id, @V("request") String message, @V("form") AdoptionForm form, @V("puppy") Puppy puppy, @V("info") String extraInfo);
 }
